@@ -10,4 +10,4 @@ Things that I don't want and won't change anymore. They are needed for as a sour
 
 #### GitHub Pages Links
 
-- [Link to QuickSettings canvas demo](https://gedelborius.github.io/conserved/quick_settings_canvas_demo/index.html)
+- [Link to QuickSettings canvas demo](https://gedelborius.github.io/canvasdemos/conserved/quick_settings_canvas_demo/)
