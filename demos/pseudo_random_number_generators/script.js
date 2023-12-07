@@ -4,7 +4,8 @@ const canvas = document.getElementById('canvas'),
       height = canvas.height = 600;
 
 function draw() {
-    middleSquareMethod();
+    // middleSquare();
+    window.prngMethods.linearCongruential();
 }
 
 draw();
