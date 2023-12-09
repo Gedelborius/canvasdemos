@@ -4,8 +4,9 @@ const canvas = document.getElementById('canvas'),
       height = canvas.height = 600;
 
 function draw() {
-    // middleSquare();
-    window.prngCanvasDemos.linearCongruential();
+    // window.prngCanvasDemos.middleSquare();
+    // window.prngCanvasDemos.linearCongruential();
+    window.prngCanvasDemos.circlesInRandomPlace_seedrandom(123);
 }
 
 draw();
