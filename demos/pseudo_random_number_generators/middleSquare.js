@@ -26,5 +26,4 @@
     }
 
     window.prngMethods.middleSquare = middleSquare;
-
 })()
