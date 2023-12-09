@@ -10,6 +10,9 @@
     function circlesInRandomPlace_seedrandom(seed) {
         const srng = new Math.seedrandom(seed);
 
+        context.fillStyle = '#95cfa4';
+        context.fillRect(0, 0, width, height);
+
         for (let i = 0; i < 50; i++) {
             const x = srng() * 600,
                 y = srng() * 600,
