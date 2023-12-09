@@ -25,5 +25,5 @@
         if (y < 600) requestAnimationFrame(middleSquare);
     }
 
-    window.prngMethods.middleSquare = middleSquare;
+    window.prngCanvasDemos.middleSquare = middleSquare;
 })()

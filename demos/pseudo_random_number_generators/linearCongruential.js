@@ -25,5 +25,5 @@
         if (y < 600) requestAnimationFrame(linearCongruential);
     }
 
-    window.prngMethods.linearCongruential = linearCongruential;
+    window.prngCanvasDemos.linearCongruential = linearCongruential;
 })()

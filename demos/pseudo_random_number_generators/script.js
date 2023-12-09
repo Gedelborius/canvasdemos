@@ -5,7 +5,7 @@ const canvas = document.getElementById('canvas'),
 
 function draw() {
     // middleSquare();
-    window.prngMethods.linearCongruential();
+    window.prngCanvasDemos.linearCongruential();
 }
 
 draw();
