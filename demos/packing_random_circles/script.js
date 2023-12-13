@@ -104,7 +104,7 @@ function drawCircles() {
         context.fillStyle = getPanelParameters.circleColor();
         context.fill();
     // }
-    requestAnimationFrame(drawCirlces);
+    requestAnimationFrame(drawCircles);
 }
 
 function draw() {
