@@ -32,15 +32,23 @@ console.log(getPanelParameters.prngDemo())
 function draw() {
     const currentDemo = getPanelParameters.prngDemo().value;
     switch (currentDemo) {
+        case prngDemoName[0]:
+            console.log('0')
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+            context.beginPath();
+            break;
         case prngDemoName[1]:
+            console.log('1')
             window.prngCanvasDemos.middleSquare();
             break;
         case prngDemoName[2]:
+            console.log('2')
             window.prngCanvasDemos.linearCongruential()
             break;
         case prngDemoName[3]:
+            console.log('3')
             window.prngCanvasDemos.circlesInRandomPlace_seedrandom(123)
-            break;
+            break;11
     }
 
     // window.prngCanvasDemos.middleSquare();
