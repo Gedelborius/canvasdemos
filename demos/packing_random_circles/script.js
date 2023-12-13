@@ -87,7 +87,7 @@ function isValid(circle) {
     return true;
 }
 
-function drawCirlces() {
+function drawCircles() {
     const circle = createCircle();
     let counter = 0;
     while (!isValid(circle)) {
@@ -111,5 +111,5 @@ function draw() {
     circles = [];
     setUpBackground();
     setUpShadow();
-    drawCirlces();
+    drawCircles();
 }

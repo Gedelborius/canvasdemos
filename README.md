@@ -7,8 +7,10 @@ A collection of various examples on canvas made on pure javascript.
 ### Demos
 
 - [Packing random circles](https://gedelborius.github.io/canvasdemos/demos/packing_random_circles/)
+- [Pseudo random number generators](https://gedelborius.github.io/canvasdemos/demos/pseudo_random_number_generators/)
+- [Particles](https://gedelborius.github.io/canvasdemos/demos/particles)
 
-### conserved
+### Conserved
 
 Things that I don't want and won't change anymore. They are needed for as a source of information.
 
