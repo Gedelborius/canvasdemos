@@ -17,20 +17,25 @@ for (let i = 0; i < numParticles; i++) {
     );
 }
 
-function checkBounds(particle, context,) {
-    if (particle.position.getX() < 0 + 10) {
+function checkBounds(particle, context, particleRadius) {
+    const top = 0 + particleRadius;
+    const right = context.canvas.width - particleRadius;
+    const bottom = context.canvas.height - particleRadius;
+    const left = 0 + particleRadius;
+
+    if (particle.position.getX() < left) {
         particle.position.setX(0 + 10);
         particle.velocity.multiplyBy(-1);
     }
-    if (particle.position.getY() < 0 + 10) {
+    if (particle.position.getY() < top) {
         particle.position.setY(0 + 10);
         particle.velocity.multiplyBy(-1);
     }
-    if (particle.position.getX() > context.canvas.width - 10) {
+    if (particle.position.getX() > right) {
         particle.position.setX(context.canvas.width - 10);
         particle.velocity.multiplyBy(-1);
     }
-    if (particle.position.getY() > context.canvas.height - 10) {
+    if (particle.position.getY() > bottom) {
         particle.position.setY(context.canvas.height - 10);
         particle.velocity.multiplyBy(-1);
     }
@@ -40,7 +45,7 @@ function update() {
     context.clearRect(0, 0, width, height);
     for (let i = 0; i < numParticles; i++) {
         const p = particles[i];
-        checkBounds(p, context);
+        checkBounds(p, context, particleRadius);
         p.update();
         context.beginPath();
         context.arc(
