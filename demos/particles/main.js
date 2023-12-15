@@ -23,20 +23,20 @@ function checkBounds(particle, context, particleRadius) {
     const bottom = context.canvas.height - particleRadius;
     const left = 0 + particleRadius;
 
-    if (particle.position.getX() < left) {
-        particle.position.setX(0 + 10);
+    if (particle.position.x < left) {
+        particle.position.x = left;
         particle.velocity.multiplyBy(-1);
     }
-    if (particle.position.getY() < top) {
-        particle.position.setY(0 + 10);
+    if (particle.position.y < top) {
+        particle.position.y = top;
         particle.velocity.multiplyBy(-1);
     }
-    if (particle.position.getX() > right) {
-        particle.position.setX(context.canvas.width - 10);
+    if (particle.position.x > right) {
+        particle.position.x = right;
         particle.velocity.multiplyBy(-1);
     }
-    if (particle.position.getY() > bottom) {
-        particle.position.setY(context.canvas.height - 10);
+    if (particle.position.y > bottom) {
+        particle.position.y = bottom;
         particle.velocity.multiplyBy(-1);
     }
 }
@@ -49,8 +49,8 @@ function update() {
         p.update();
         context.beginPath();
         context.arc(
-            p.position.getX(),
-            p.position.getY(),
+            p.position.x,
+            p.position.y,
             particleRadius,
             0,
             Math.PI * 2,

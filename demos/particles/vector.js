@@ -1,79 +1,72 @@
 const vector = {
-    _x: 1,
-    _y: 0,
+    x: 1,
+    y: 0,
 
-    // x y
-    setX: function(x) {
-        this._x = x;
-    },
-    getX: function() {
-        return this._x;
-    },
-    setY: function (y) {
-        this._y = y;
-    },
-    getY: function () {
-        return this._y;
-    },
-
-    // angle
-    setAngle: function(angle) {
+    setAngle: function (angle) {
         const length = this.getLength();
-        this._x = Math.cos(angle) * length;
-        this._y = Math.sin(angle) * length;
+        this.x = Math.cos(angle) * length;
+        this.y = Math.sin(angle) * length;
     },
-    getAngle: function() {
-        return Math.atan2(this._y, this._x);
+    getAngle: function () {
+        return Math.atan2(this.y, this.x);
     },
 
-
-    // length
-    setLength: function(length) {
+    setLength: function (length) {
         const angle = this.getAngle();
-        this._x = Math.cos(angle) * length;
-        this._y = Math.sin(angle) * length;
+        this.x = Math.cos(angle) * length;
+        this.y = Math.sin(angle) * length;
     },
-    getLength: function() {
-        return Math.sqrt(this._x**2 + this._y ** 2);
+    getLength: function () {
+        return Math.sqrt(this.x ** 2 + this.y ** 2);
     },
 
-    // create
-    create: function(x,y) {
+    create: function (x, y) {
         const obj = Object.create(this);
-        obj.setX(x);
-        obj.setY(y);
+        obj.x = x;
+        obj.y = y;
         return obj;
     },
 
-    // operations
-    add: function(vector2) {
-        return vector.create(this._x + vector2.getX(),this._y + vector2.getY());
+    add: function (vector2) {
+        return vector.create(
+            this.x + vector2.x,
+            this.y + vector2.y
+        );
     },
-    subtract: function(vector2) {
-        return vector.create(this._x - vector2.getX(), this._y - vector2.getY());
+    subtract: function (vector2) {
+        return vector.create(
+            this.x - vector2.x,
+            this.y - vector2.y
+        );
     },
-    multiply: function(multiplier) {
-        return vector.create(this._x * multiplier, this._y * multiplier);
+    multiply: function (multiplier) {
+        return vector.create(
+            this.x * multiplier,
+            this.y * multiplier
+        );
     },
-    divide: function(divider) {
-        return vector.create(this._x / divider, this._y * divider);
+    divide: function (divider) {
+        return vector.create(
+            this.x / divider,
+            this.y * divider
+        );
     },
 
 
-    addTo: function(vector2) {
-        this._x += vector2.getX();
-        this._y += vector2.getY();
+    addTo: function (vector2) {
+        this.x += vector2.x;
+        this.y += vector2.y;
     },
-    subtractFrom: function(vector2) {
-        this._x -= vector2.getX();
-        this._y -= vector2.getY();
+    subtractFrom: function (vector2) {
+        this.x -= vector2.x;
+        this.y -= vector2.y;
     },
-    multiplyBy: function(multiplier) {
-        this._x *= multiplier;
-        this._y *= multiplier;
+    multiplyBy: function (multiplier) {
+        this.x *= multiplier;
+        this.y *= multiplier;
     },
-    divideBy: function(divider) {
-        this._x /= divider;
-        this._y /= divider;
+    divideBy: function (divider) {
+        this.x /= divider;
+        this.y /= divider;
     }
 }
