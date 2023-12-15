@@ -10,7 +10,6 @@
  * - - insideCircleColor (string for inside cirlce color),
  */
 function demoRandomCircles(prng, seed, context, settings) {
-    console.log(prng)
     const nextRandomFloat = prng(seed);
     context.fillStyle = settings.backgroundColor();
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
