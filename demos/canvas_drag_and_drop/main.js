@@ -12,9 +12,9 @@ let handle = {
 let offset = {};
 
 function onMouseMove(event) {
-    handle.x = event.clientX;
-    handle.y = event.clientY;
-    draw();
+    handle.x = event.clientX - offset.x;
+    handle.y = event.clientY - offset.y;
+    // draw();
 }
 
 function onMouseUp(event) {
@@ -51,6 +51,7 @@ function draw() {
         false
     );
     context.fill();
+    requestAnimationFrame(draw);
 }
 
 document.body.addEventListener('mousedown', onMouseDown);
