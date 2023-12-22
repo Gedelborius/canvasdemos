@@ -18,7 +18,7 @@ function onMouseMove(event) {
     dragHandle.y = event.clientY - offset.y;
 }
 
-function onMouseUp(event) {
+function onMouseUp() {
     document.body.removeEventListener('mousemove', onMouseMove);
     document.body.removeEventListener('mouseup', onMouseUp);
     isDragging = false;
