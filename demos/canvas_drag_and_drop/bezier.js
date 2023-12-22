@@ -3,31 +3,12 @@ const context = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
-let handle0 = {
-    x: 100,
-    y: 100,
-    radius: 15
-}
-
-let handle1 = {
-    x: 400,
-    y: 400,
-    radius: 15
-}
-
-let handle2 = {
-    x: 700,
-    y: 100,
-    radius: 15
-}
-
-let handle3 = {
-    x: 1000,
-    y: 500,
-    radius: 15
-}
-
-let handles = [handle0, handle1, handle2, handle3];
+let handles = [
+    { x: 100, y: 100, r: 15 },
+    { x: 400, y: 400, r: 15 },
+    { x: 700, y: 100, r: 15 },
+    { x: 1000, y: 500, r: 15 }
+];
 let offset = {};
 let isDragging = false;
 let dragHandle = null;
@@ -47,11 +28,11 @@ function draw() {
     context.clearRect(0, 0, width, height);
 
     context.beginPath();
-    context.moveTo(handle0.x, handle0.y);
+    context.moveTo(handles[0].x, handles[0].y);
     context.bezierCurveTo(
-        handle1.x, handle1.y,
-        handle2.x, handle2.y,
-        handle3.x, handle3.y
+        handles[1].x, handles[1].y,
+        handles[2].x, handles[2].y,
+        handles[3].x, handles[3].y
     );
     context.stroke();
 
@@ -71,7 +52,7 @@ function draw() {
         context.arc(
             handle.x,
             handle.y,
-            handle.radius,
+            handle.r,
             0,
             Math.PI * 2,
             false

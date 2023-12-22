@@ -34,10 +34,10 @@ const utils = {
         return Math.sqrt(dx * dx + dy * dy);
     },
     circleCollision: function (c0, c1) {
-        return utils.distance(c0, c1) <= c0.radius + c1.radius;
+        return utils.distance(c0, c1) <= c0.r + c1.r;
     },
     circlePointCollision: function (x, y, circle) {
-        return utils.distanceXY(x, y, circle.x, circle.y) < circle.radius;
+        return utils.distanceXY(x, y, circle.x, circle.y) < circle.r;
     },
     inRange: function (value, min, max) {
         return value >= Math.min(min, max) &&
@@ -51,35 +51,35 @@ const utils = {
         return Math.max(min0, max0) >= Math.min(min1, max1) &&
             Math.min(min0, max0) <= Math.max(min1, max1);
     },
-    rectIntersect: function(r0, r1) {
+    rectIntersect: function (r0, r1) {
         return utils.rangeIntersect(
             r0.x,
             r0.x + r0.width,
             r1.x,
             r1.x + r1.width
         ) &&
-        utils.rangeIntersect(
-            r0.y,
-            r0.y + r0.height,
-            r1.y,
-            r1.y + r1.height
-        );
+            utils.rangeIntersect(
+                r0.y,
+                r0.y + r0.height,
+                r1.y,
+                r1.y + r1.height
+            );
     },
-    degreesToRads: function(degrees) {
+    degreesToRads: function (degrees) {
         return degrees / 180 * Math.PI;
     },
-    radsToDegrees: function(radians) {
+    radsToDegrees: function (radians) {
         return radians * 180 / Math.PI;
     },
     randomRange: function (min, max) {
         return min + Math.random() * (max - min);
     },
-    randomInt: function(min, max) {
+    randomInt: function (min, max) {
         return Math.floor(
             min + Math.random() * (max - min + 1)
         );
     },
-    randomDist: function(min, max, iterations) {
+    randomDist: function (min, max, iterations) {
         let total = 0;
         for (let i = 0; i < iterations; i += 1) {
             total += utils.randomRange(min, max);
