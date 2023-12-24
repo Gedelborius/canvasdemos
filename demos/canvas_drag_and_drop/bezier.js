@@ -13,10 +13,10 @@ const defaultParameters = {
         step: 1
     },
     handles: [
-        { x: 100, y: 100, r: 15, color: '#808080' },
-        { x: 400, y: 400, r: 15, color: '#808080' },
-        { x: 700, y: 100, r: 15, color: '#808080' },
-        { x: 1000, y: 500, r: 15, color: '#808080' }
+        { x: width * 0.1, y: height * 0.1, r: 15, color: '#808080' },
+        { x: width * 0.1, y: height * 0.4, r: 15, color: '#808080' },
+        { x: width * 0.7, y: height * 0.1, r: 15, color: '#808080' },
+        { x: width * 0.7, y: height * 0.4, r: 15, color: '#808080' }
     ],
     doRandomSpawn: false
 }
@@ -67,13 +67,7 @@ const getPanelValue = {
     doRandomSpawn: () => panel.getValue(panelTitles.doRandomSpawn)
 }
 
-
-let handles = [
-    { x: 100, y: 100, r: 15 },
-    { x: 400, y: 400, r: 15 },
-    { x: 700, y: 100, r: 15 },
-    { x: 1000, y: 500, r: 15 }
-];
+let handles = [];
 
 let updateRequest = null;
 let prng = null;
