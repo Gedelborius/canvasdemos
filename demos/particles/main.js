@@ -126,19 +126,19 @@ function checkBounds(particle, context, particleRadius) {
     const left = 0 + particleRadius;
     if (particle.position.x < left) {
         particle.position.x = left;
-        particle.velocity.multiplyBy(-1);
+        particle.velocity.x *= -1;
     }
     if (particle.position.y < top) {
         particle.position.y = top;
-        particle.velocity.multiplyBy(-1);
+        particle.velocity.y *= -1;
     }
     if (particle.position.x > right) {
         particle.position.x = right;
-        particle.velocity.multiplyBy(-1);
+        particle.velocity.x *= -1;
     }
     if (particle.position.y > bottom) {
         particle.position.y = bottom;
-        particle.velocity.multiplyBy(-1);
+        particle.velocity.y *= -1;
     }
 }
 
