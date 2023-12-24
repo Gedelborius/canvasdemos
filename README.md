@@ -9,6 +9,8 @@ A collection of various examples on canvas made on pure javascript.
 - [Packing random circles](https://gedelborius.github.io/canvasdemos/demos/packing_random_circles/)
 - [Pseudo random number generators](https://gedelborius.github.io/canvasdemos/demos/pseudo_random_number_generators/)
 - [Particles](https://gedelborius.github.io/canvasdemos/demos/particles)
+- [Random Distribution](https://gedelborius.github.io/canvasdemos/demos/random_distribution)
+- [Canvas drag and drop](https://gedelborius.github.io/canvasdemos/demos/canvas_drag_and_drop)
 
 ### Conserved
 

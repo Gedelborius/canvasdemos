@@ -1,5 +1,8 @@
 /**
  * According to the solution of the problem here - https://github.com/bit101/quicksettings/issues/57.
+ * 
+ * Fixed version of quicksettings.js for modern browsers like Google Chrome.
+ * 
  * Styling in class for color input was changed.
  * 
  *  FROM: 
@@ -514,26 +517,26 @@
             return this;
         },
 
-		/**
-		 * Sets a key that, when pressed, will show and hide the panel. More than one key may be set (allows use of keys on stylus as well as keyboard).
-		 * @param key  (accepts a string, e.g. 'a' or integer representing javascript character code)
-		 * @returns {module:QuickSettings}
-		 */
-		 				
-        setKey: function(key) {
-            if(Number.isInteger(key)) { 
+        /**
+         * Sets a key that, when pressed, will show and hide the panel. More than one key may be set (allows use of keys on stylus as well as keyboard).
+         * @param key  (accepts a string, e.g. 'a' or integer representing javascript character code)
+         * @returns {module:QuickSettings}
+         */
+
+        setKey: function (key) {
+            if (Number.isInteger(key)) {
                 this._keyCodeArray.push(key);
-            }else{
+            } else {
                 this._keyCodeArray.push(key.toUpperCase().charCodeAt(0));
             }
-            document.addEventListener("keyup", this._onKeyUp);			
+            document.addEventListener("keyup", this._onKeyUp);
             return this;
-        },		
-		
-        _onKeyUp: function(event) {	
-            if(this._keyCodeArray.includes(event.keyCode)) {
+        },
+
+        _onKeyUp: function (event) {
+            if (this._keyCodeArray.includes(event.keyCode)) {
                 this.toggleVisibility();
-            }			
+            }
         },
 
         _doubleClickTitle: function () {
@@ -878,8 +881,7 @@
          * @returns {*}
          */
         addDate: function (title, date, callback) {
-            function _createDateString(date)
-            {
+            function _createDateString(date) {
                 if (date instanceof Date) {
                     var year = date.getFullYear();
                     var month = date.getMonth() + 1;
