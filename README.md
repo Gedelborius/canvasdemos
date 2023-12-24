@@ -19,3 +19,8 @@ Things that I don't want and won't change anymore. They are needed for as a sour
 #### GitHub Pages Links
 
 - [QuickSettings canvas demo](https://gedelborius.github.io/canvasdemos/conserved/quick_settings_canvas_demo/)
+
+#### Выводы
+
+- QuickSettings
+  Не работает нормально на мобильных устройствах. Не используется управление панелью реализованно только на событиях мыши. Тач события не используются.
