@@ -1,11 +1,18 @@
 const defaultParameters = {
     scene: {
+        cvs: null,
+        ctx: null,
         background: {
             color: '#000000',
         },
         particles: {
             count: 50,
-            array: []
+            array: [],
+            hue: {
+                min: 0,
+                max: 40
+            },
+            radius: 30
         },
         mouse: {
             beforeX: undefined,
@@ -15,61 +22,61 @@ const defaultParameters = {
 }
 
 class Particle {
-    constructor(cvs) {
-        this.reset(cvs);
+    constructor(scene) {
+        this.reset(scene);
     }
-    reset(cvs) {
-        this.x = cvs.width * 0.5;
-        this.y = cvs.height * 0.5;
+    reset(scene) {
+        this.x = scene.cvs.width * 0.5;
+        this.y = scene.cvs.height * 0.5;
         this.x += getRandomInt(-10, 10);
         this.y += getRandomInt(-10, 10);
-        this.radius = 30;
-        this.hue = getRandomInt(0, 40);
+        this.radius = scene.particles.radius;
+        this.hue = getRandomInt(scene.particles.hue.min, scene.particles.hue.max);
     }
-    update(cvs, scene) {
+    update(scene) {
         if (this.radius <= 0) {
-            this.reset(cvs);
+            this.reset(scene);
         }
         this.radius -= 1;
         this.y -= 5;
         this.x += scene.mouse.forceX * ((30 - this.radius) / 30) * 1.5;
     }
-    draw(ctx) {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${this.hue}, 100%, 55%, .5)`;
-        ctx.fill();
-        ctx.shadowColor = `hsla(${this.hue}, 100%, 55%, 1)`;
-        ctx.shadowBlur = 15;
-        ctx.closePath();
+    draw(scene) {
+        scene.ctx.beginPath();
+        scene.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        scene.ctx.fillStyle = `hsla(${this.hue}, 100%, 55%, .5)`;
+        scene.ctx.fill();
+        scene.ctx.shadowColor = `hsla(${this.hue}, 100%, 55%, 1)`;
+        scene.ctx.shadowBlur = 15;
+        scene.ctx.closePath();
     }
 }
 
-function drawScene(cvs, ctx, scene) {
+function drawScene(scene) {
     const arr = scene.particles.array;
     for (let i = 0; i < arr.length; i++) {
         const p = arr[i];
-        p.update(cvs, scene);
-        p.draw(ctx);
+        p.update(scene);
+        p.draw(scene);
     }
 }
 
-function animationLoop(cvs, ctx, scene) {
+function animationLoop(scene) {
     if (scene.particles.array.length < scene.particles.count) {
-        scene.particles.array.push(new Particle(cvs));
+        scene.particles.array.push(new Particle(scene));
     }
 
-    ctx.clearRect(0, 0, cvs.width, cvs.height);
-    ctx.globalCompositeOperation = 'lighter';
-    drawScene(cvs, ctx, scene);
+    scene.ctx.clearRect(0, 0, scene.cvs.width, scene.cvs.height);
+    scene.ctx.globalCompositeOperation = 'lighter';
+    drawScene(scene);
 
-    requestAnimationFrame(_ => animationLoop(cvs, ctx, scene));
+    requestAnimationFrame(_ => animationLoop(scene));
 }
 
 
-function mousemove(e, cvs, scene) {
-    const w = cvs.width;
-    const h = cvs.height;
+function mousemove(e, scene) {
+    const w = scene.cvs.width;
+    const h = scene.cvs.height;
 
     if (e.y >= h * 0.5 - 200 && e.y <= h * 0.5 + 30) {
         if (e.x >= w * 0.5 - 100 && e.x <= w * 0.5 + 100) {
@@ -87,9 +94,9 @@ function mousemove(e, cvs, scene) {
     }
 }
 
-function resize(cvs) {
-    cvs.width = window.innerWidth;
-    cvs.height = window.innerHeight;
+function resize(scene) {
+    scene.cvs.width = window.innerWidth;
+    scene.cvs.height = window.innerHeight;
 }
 
 function setGui(scene) {
@@ -97,29 +104,33 @@ function setGui(scene) {
     const fBackground = gui.addFolder('Background');
     fBackground.addColor(scene.background, 'color').onChange(_ => setBackgroundColorToBody(scene.background.color));
     const fParticles = gui.addFolder('Particles Settings');
-    fParticles.add(scene.particles, 'count', 1, 200, 1);
+    const fParticlesHue = fParticles.addFolder('Particles Hue');
+    fParticlesHue.add(scene.particles.hue, 'min', 0, 255, 1);
+    fParticlesHue.add(scene.particles.hue, 'max', 0, 255, 1);
+    const fParticlesRadius = fParticles.addFolder('Particles Radius');
+    fParticlesRadius.add(scene.particles, 'radius', 0, 255, 1);
     return gui;
 }
 
 function start() {
-    let cvs, ctx, scene = { ...defaultParameters.scene };
+    let scene = { ...defaultParameters.scene };
 
     canvasHelper.create.canvas();
     canvasHelper.setContext();
     canvasHelper.insertBeforeFirst.canvas();
 
-    cvs = canvasHelper.canvas();
-    ctx = canvasHelper.context();
+    scene.cvs = canvasHelper.canvas();
+    scene.ctx = canvasHelper.context();
 
     setBackgroundColorToBody('black');
 
     const gui = setGui(scene);
 
-    resize(cvs);
-    animationLoop(cvs, ctx, scene);
+    resize(scene);
+    animationLoop(scene);
 
-    window.addEventListener("resize", _ => resize(cvs));
-    window.addEventListener("mousemove", e => mousemove(e, cvs, scene));
+    window.addEventListener("resize", _ => resize(scene));
+    window.addEventListener("mousemove", e => mousemove(e, scene));
 }
 
 initialization(start);
