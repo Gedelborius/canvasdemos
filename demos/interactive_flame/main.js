@@ -116,7 +116,7 @@ function start() {
 
     setBackgroundColorToBody('black');
 
-    gui(cvs, scene);
+    gui(scene);
 
     resize(cvs);
     animationLoop(cvs, ctx, scene);
