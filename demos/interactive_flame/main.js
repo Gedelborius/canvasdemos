@@ -1,5 +1,8 @@
 const defaultParameters = {
     scene: {
+        background: {
+            color: '#000000',
+        },
         particles: {
             count: 50,
             array: []
@@ -89,6 +92,18 @@ function resize(cvs) {
     cvs.height = window.innerHeight;
 }
 
+function gui(scene) {
+    const gui = new dat.GUI();
+    const fBackground = gui.addFolder('Background');
+    fBackground.addColor(scene.background, 'color').onChange(_ => setBackgroundColorToBody(scene.background.color));
+    const fParticles = gui.addFolder('Particles Settings');
+    fParticles.add(scene.particles, 'count', 1, 200, 1);
+}
+
+function setBackgroundColorToBody(color) {
+    document.querySelector('body').style.backgroundColor = color;
+}
+
 function start() {
     let cvs, ctx, scene = { ...defaultParameters.scene };
 
@@ -99,7 +114,9 @@ function start() {
     cvs = canvasHelper.canvas();
     ctx = canvasHelper.context();
 
-    document.querySelector('body').style.backgroundColor = 'black';
+    setBackgroundColorToBody('black');
+
+    gui(cvs, scene);
 
     resize(cvs);
     animationLoop(cvs, ctx, scene);

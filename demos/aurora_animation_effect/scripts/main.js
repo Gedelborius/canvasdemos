@@ -29,7 +29,6 @@ const defaultParameters = {
 function setGUI(cvs, scene) {
     const gui = new dat.GUI();
 
-
     const fBackgroundColor = gui.addFolder('Background color');
     fBackgroundColor.addColor(scene.background, 'color');
 
