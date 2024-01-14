@@ -1,72 +1,29 @@
-const canvas = document.querySelector('#canvas');
-const ctx = canvas.getContext('2d');
-
-let w, h, particles = [];
-let mouse = {
-    x: undefined,
-    y: undefined
-}
-
-function init() {
-    resizeReset();
-    animationLoop();
-}
-
-function resizeReset() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-}
-
-function animationLoop() {
-    ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
-    ctx.fillRect(0, 0, w, h);
-
-    drawParticles();
-
-    let temp = [];
-    for (let i = 0; i < particles.length; i++) {
-        if (particles[i].time <= particles[i].ttl) {
-            temp.push(particles[i]);
+const defaultParameters = {
+    scene: {
+        cvs: null,
+        ctx: null,
+        color: {
+            background: '#ffffff',
+        },
+        particle: {
+            array: [],
+            size: 2,
+            timeToLive: 120
+        },
+        mouse: {
+            x: null,
+            y: null
         }
     }
-    particles = temp;
-
-    requestAnimationFrame(animationLoop);
-}
-
-function drawParticles() {
-    // console.log('drawp')
-    for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-    }
-}
-
-function mousemove(e) {
-    mouse.x = e.x;
-    mouse.y = e.y;
-    // console.log('mousemove')
-    particles.push(new Particle());
-    // console.log(particles)
-
-}
-
-function mouseout() {
-    mouse.x = undefined;
-    mouse.y = undefined;
-}
-
-function getRandomInt(min, max) {
-    return Math.round(Math.random() * (max - min)) + min;
 }
 
 class Particle {
-    constructor() {
-        this.x = mouse.x + getRandomInt(-20, 20);
-        this.y = mouse.y + getRandomInt(-20, 20);
-        this.size = 2;
+    constructor(scene) {
+        this.x = scene.mouse.x + getRandomInt(-20, 20);
+        this.y = scene.mouse.y + getRandomInt(-20, 20);
+        this.size = scene.particle.size;
 
-        this.h = this.y / (h / 360);
+        this.h = this.y / (scene.cvs.height / 360);
         this.hue = getRandomInt(this.h - 20, this.h + 20);
         this.color = `hsla(${this.hue}, 100%, 50%, 1)`;
 
@@ -74,15 +31,14 @@ class Particle {
         this.angle = getRandomInt(0, 360);
 
         this.time = 0;
-        this.ttl = 120;
+        this.ttl = scene.particle.timeToLive;
     }
-    draw() {
-        // console.log('draw')
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-        ctx.closePath();
+    draw(scene) {
+        scene.ctx.beginPath();
+        scene.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        scene.ctx.fillStyle = this.color;
+        scene.ctx.fill();
+        scene.ctx.closePath();
     }
     update() {
         if (this.time <= this.ttl) {
@@ -98,11 +54,76 @@ class Particle {
     }
 }
 
-if (document.readyState !== 'loading') {
-    init();
-} else {
-    document.addEventListener('DOMContentLoaded', init);
+function animationLoop(scene) {
+    scene.ctx.fillStyle = scene.color.background;
+    scene.ctx.globalAlpha = 0.1;
+    scene.ctx.fillRect(0, 0, scene.cvs.width, scene.cvs.height);
+    scene.ctx.globalAlpha = 1;
+
+    for (let i = 0; i < scene.particle.array.length; i++) {
+        scene.particle.array[i].update();
+        scene.particle.array[i].draw(scene);
+    }
+
+    let temp = [];
+    for (let i = 0; i < scene.particle.array.length; i++) {
+        if (scene.particle.array[i].time <= scene.particle.array[i].ttl) {
+            temp.push(scene.particle.array[i]);
+        }
+    }
+    scene.particle.array = temp;
+
+    requestAnimationFrame(_ => animationLoop(scene));
 }
-window.addEventListener("resize", resizeReset);
-window.addEventListener("mousemove", mousemove);
-window.addEventListener("mouseout", mouseout);
+
+function mousemove(scene, e) {
+    scene.mouse.x = e.x;
+    scene.mouse.y = e.y;
+    scene.particle.array.push(new Particle(scene));
+}
+
+function mouseout(scene) {
+    scene.mouse.x = null;
+    scene.mouse.y = null;
+}
+
+function resize(scene) {
+    scene.cvs.width = window.innerWidth;
+    scene.cvs.height = window.innerHeight;
+}
+
+function setGui(scene) {
+    const gui = new dat.GUI();
+    const fColors = gui.addFolder('Colors');
+    const colorsKeys = Object.keys(scene.color);
+    for (let i = 0; i < colorsKeys.length; i++) {
+        fColors.addColor(scene.color, colorsKeys[i]).onChange(_ => resize(scene));
+    }
+    const fParticle = gui.addFolder('Particle Settings');
+    fParticle.add(scene.particle, 'size', 1, 20, 1);
+    fParticle.add(scene.particle, 'timeToLive', 10, 200, 1);
+
+    return gui;
+}
+
+function start() {
+    let scene = { ...defaultParameters.scene };
+
+    canvasHelper.create.canvas();
+    canvasHelper.setContext();
+    canvasHelper.insertBeforeFirst.canvas();
+
+    scene.cvs = canvasHelper.canvas();
+    scene.ctx = canvasHelper.context();
+
+    const gui = setGui(scene);
+
+    resize(scene);
+    animationLoop(scene);
+
+    window.addEventListener("resize", _ => resize(scene));
+    scene.cvs.addEventListener("mousemove", e => mousemove(scene, e));
+    scene.cvs.addEventListener("mouseout", _ => mouseout(scene));
+}
+
+initialization(start);
