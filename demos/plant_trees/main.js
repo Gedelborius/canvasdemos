@@ -148,7 +148,7 @@ function start() {
     restart(scene);
     animationLoop(scene);
     window.addEventListener("resize", _ => restart(scene));
-    window.addEventListener("click", e => scene.trees.push(new Tree(scene, e.x)));
+    scene.cvs.addEventListener("click", e => scene.trees.push(new Tree(scene, e.x)));
 }
 
 initialization(start);
