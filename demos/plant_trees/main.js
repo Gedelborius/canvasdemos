@@ -1,5 +1,10 @@
 const defaultParameters = {
     scene: {
+        color: {
+            background: '#cccccc',
+            branch: '#000000',
+            ground: '#000000'
+        },
         cvs: null,
         ctx: null,
         trees: null,
@@ -29,9 +34,11 @@ class Branch {
         if (this.progress > 1 || this.radius <= 0) return;
         scene.ctx.beginPath();
         scene.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        scene.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        scene.ctx.fillStyle = scene.color.branch;
+        scene.ctx.globalAlpha = 0.5;
         scene.ctx.fill();
         scene.ctx.closePath();
+        scene.ctx.globalAlpha = 1;
     }
     update(scene) {
         let radian = (Math.PI / 180) * this.angle;
@@ -107,27 +114,37 @@ function animationLoop(scene) {
 }
 
 function drawGround(scene) {
-    // console.log('hello from draw ground')
-    scene.ctx.fillStyle = 'black';
-    scene.ctx.fillRect = (0, scene.cvs.height - 100, scene.cvs.width, scene.cvs.height);
+    scene.ctx.fillStyle = scene.color.ground;
+    scene.ctx.fillRect(0, scene.cvs.height - 10, scene.cvs.width, scene.cvs.height);
 }
 
 function restart(scene) {
     scene.cvs.width = window.innerWidth;
     scene.cvs.height = window.innerHeight;
     scene.trees = [];
+    setBackgroundColorToBody(scene.color.background)
     drawGround(scene);
     scene.trees.push(new Tree(scene));
 }
 
+function setGui(scene) {
+    const gui = new dat.GUI();
+    const fColors = gui.addFolder('Colors');
+    const colorsKeys = Object.keys(scene.color);
+    for (let i = 0; i < colorsKeys.length; i++) {
+        fColors.addColor(scene.color, colorsKeys[i]).onChange(_ => restart(scene));
+    }
+    return gui;
+}
+
 function start() {
     let scene = { ...defaultParameters.scene };
-    document.querySelector('body').style.backgroundColor = '#ccc';
     canvasHelper.create.canvas();
     canvasHelper.setContext();
     canvasHelper.insertBeforeFirst.canvas();
     scene.cvs = canvasHelper.canvas();
     scene.ctx = canvasHelper.context();
+    const gui = setGui(scene);
     restart(scene);
     animationLoop(scene);
     window.addEventListener("resize", _ => restart(scene));
