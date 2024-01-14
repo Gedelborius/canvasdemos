@@ -1,3 +1,30 @@
+function initialization(startFunction) {
+    let isListenerAdded = false;
+
+    function afterDOMContentLoaded() {
+        if (isListenerAdded) {
+            document.removeEventListener('DOMContentLoaded', afterDOMContentLoaded)
+            isListenerAdded = false;
+        }
+        startFunction();
+    }
+
+    if (document.readyState !== 'loading') {
+        afterDOMContentLoaded();
+    } else {
+        isListenerAdded = true;
+        document.addEventListener('DOMContentLoaded', afterDOMContentLoaded)
+    }
+}
+
+function getRandomInt(min, max) {
+    return Math.round(Math.random() * (max - min)) + min;
+}
+
+function checkDistance(x1, y1, x2, y2) {
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+}
+
 const utils = {
     norm: function (value, min, max) {
         return (value - min) / (max - min);
