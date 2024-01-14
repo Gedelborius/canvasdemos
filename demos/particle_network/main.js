@@ -2,9 +2,13 @@ const defaultParameters = {
     scene: {
         cvs: null,
         ctx: null,
+        color: {
+            background: '#000000',
+            particle: '#00b5ff',
+            line: '#00b5ff',
+        },
         particle: {
             array: null,
-            color: 'rgba(0, 181, 255)',
             count: 40,
             radius: {
                 default: 2,
@@ -16,7 +20,6 @@ const defaultParameters = {
             }
         },
         line: {
-            color: 'rgba(0, 181, 255)',
             radius: 300
         }
     }
@@ -26,7 +29,6 @@ class Particle {
     constructor(scene) {
         this.x = Math.random() * scene.cvs.width;
         this.y = Math.random() * scene.cvs.height;
-        this.color = scene.particle.color;
         this.radius = scene.particle.radius.default + Math.random() * scene.particle.radius.variant;
         this.speed = scene.particle.speed.default + Math.random() * scene.particle.speed.variant;
         this.directionAngle = Math.floor(Math.random() * 360);
@@ -36,15 +38,16 @@ class Particle {
         }
     }
 
-    draw(ctx) {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.fillStyle = this.color;
-        ctx.fill();
+    draw(scene) {
+        scene.ctx.beginPath();
+        scene.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        scene.ctx.closePath();
+        scene.ctx.fillStyle = scene.color.particle;
+        scene.ctx.fill();
     }
 
-    checkBorder(cvs) {
+    checkBorder(scene) {
+        const cvs = scene.cvs;
         if (this.x >= cvs.width || this.x <= 0) {
             this.vector.x *= -1;
             if (this.x > cvs.width) this.x = cvs.width;
@@ -57,8 +60,8 @@ class Particle {
         }
     }
 
-    update(cvs) {
-        this.checkBorder(cvs);
+    update(scene) {
+        this.checkBorder(scene);
         this.x += this.vector.x;
         this.y += this.vector.y;
     }
@@ -70,12 +73,14 @@ function linkPoints(point, hubs, scene) {
         const opacity = 1 - distance / scene.line.radius;
         if (opacity > 0) {
             scene.ctx.lineWidth = 0.5;
-            scene.ctx.strokeStyle = scene.line.color.slice(0, -1) + ', ' + opacity + ')';
+            scene.ctx.strokeStyle = scene.color.line;
+            scene.ctx.globalAlpha = opacity;
             scene.ctx.beginPath();
             scene.ctx.moveTo(point.x, point.y);
             scene.ctx.lineTo(hubs[i].x, hubs[i].y);
             scene.ctx.closePath();
             scene.ctx.stroke();
+            scene.ctx.globalAlpha = 1;
         }
     }
 }
@@ -85,8 +90,8 @@ function animationLoop(scene) {
     scene.ctx.clearRect(0, 0, scene.cvs.width, scene.cvs.height);
     for (let i = 0; i < arr.length; i++) {
         let p = arr[i];
-        p.update(scene.cvs);
-        p.draw(scene.ctx);
+        p.update(scene);
+        p.draw(scene);
         linkPoints(p, arr, scene);
     }
     requestAnimationFrame(_ => animationLoop(scene));
@@ -95,12 +100,41 @@ function animationLoop(scene) {
 function resize(scene) {
     scene.cvs.width = window.innerWidth;
     scene.cvs.height = window.innerHeight;
+    setBackgroundColorToBody(scene.color.background);
+}
+
+function createParticles(scene) {
+    scene.particle.array = [];
+    for (let i = 0; i < scene.particle.count; i++) {
+        scene.particle.array.push(new Particle(scene));
+    }
+}
+
+function setGui(scene) {
+    const gui = new dat.GUI();
+    const fColors = gui.addFolder('Colors');
+    const colorsKeys = Object.keys(scene.color);
+    for (let i = 0; i < colorsKeys.length; i++) {
+        fColors.addColor(scene.color, colorsKeys[i]).onChange(_ => resize(scene));
+    }
+
+    const fParticle = gui.addFolder('Particles Settings');
+    fParticle.add(scene.particle, 'count', 2, 200, 1).onChange(_ => createParticles(scene));
+    const fParticleRadius = fParticle.addFolder('Radius');
+    fParticleRadius.add(scene.particle.radius, 'default', 1, 20, 1).onChange(_ => createParticles(scene));
+    fParticleRadius.add(scene.particle.radius, 'variant', 1, 20, 1).onChange(_ => createParticles(scene));
+    const fParticleSpeed = fParticle.addFolder('Speed');
+    fParticleSpeed.add(scene.particle.speed, 'default', 1, 20, 1).onChange(_ => createParticles(scene));
+    fParticleSpeed.add(scene.particle.speed, 'variant', 1, 20, 1).onChange(_ => createParticles(scene));
+
+    const fLine = gui.addFolder('Line Settings');
+    fLine.add(scene.line, 'radius', 1, 600, 1);
+
+    return gui;
 }
 
 function start() {
     let scene = { ...defaultParameters.scene };
-
-    document.querySelector('body').style.backgroundColor = 'black';
 
     canvasHelper.create.canvas();
     canvasHelper.setContext();
@@ -109,12 +143,11 @@ function start() {
     scene.cvs = canvasHelper.canvas();
     scene.ctx = canvasHelper.context();
 
+    const gui = setGui(scene);
+
     resize(scene);
 
-    scene.particle.array = [];
-    for (let i = 0; i < scene.particle.count; i++) {
-        scene.particle.array.push(new Particle(scene));
-    }
+    createParticles(scene);
 
     animationLoop(scene);
 
