@@ -70,7 +70,30 @@ function animationLoop(scene) {
     scene.ctx.globalCompositeOperation = 'lighter';
     drawScene(scene);
 
-    requestAnimationFrame(_ => animationLoop(scene));
+    // requestAnimationFrame(_ => animationLoop(scene));
+
+    // runAnimationWithFps(10, ()=>animationLoop(scene));
+}
+
+function runAnimationWithFps(fps = 10, callback){
+    let frameCounter = 0;
+    let prevTime = 0;
+    const frameMs = Math.round(1000 / fps);
+
+    const animatedCallback = (time)=>{
+        const dT = time - prevTime;
+
+        if(dT>=frameMs) {
+            prevTime = time;
+            callback();
+            console.log('next frame', frameCounter++);
+            console.log('time', time);
+            console.log('dT', dT);
+        }
+        requestAnimationFrame(animatedCallback);
+    }
+
+    requestAnimationFrame(animatedCallback);
 }
 
 
@@ -127,7 +150,8 @@ function start() {
     const gui = setGui(scene);
 
     resize(scene);
-    animationLoop(scene);
+    // animationLoop(scene);
+    runAnimationWithFps(60, ()=>animationLoop(scene));
 
     window.addEventListener("resize", _ => resize(scene));
     window.addEventListener("mousemove", e => mousemove(e, scene));
