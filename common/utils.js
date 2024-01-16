@@ -36,7 +36,7 @@ function test_new(callback, fps = 60) {
     let thenTimeStamp = 0;
     const frameCallback = (nowTimeStamp) => {
         const deltaTime = nowTimeStamp - thenTimeStamp;
-        if (deltaTime > interval) {
+        if (deltaTime >= interval) {
             thenTimeStamp = nowTimeStamp - (deltaTime % interval);
             callback();
         }
@@ -46,8 +46,8 @@ function test_new(callback, fps = 60) {
 }
 
 function render(callback, fps = 30) {
-    test_old(callback);
-    // test_new(callback);
+    // test_old(callback);
+    test_new(callback);
 }
 
 function setBackgroundColorToBody(color) {
