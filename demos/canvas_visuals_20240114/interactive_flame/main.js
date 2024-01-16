@@ -68,28 +68,21 @@ function animationLoop(scene) {
 
     scene.ctx.clearRect(0, 0, scene.cvs.width, scene.cvs.height);
     scene.ctx.globalCompositeOperation = 'lighter';
-    drawScene(scene);
-
-    // requestAnimationFrame(_ => animationLoop(scene));
-
-    // runAnimationWithFps(10, ()=>animationLoop(scene));
+    drawScene(scene);;
 }
 
 function runAnimationWithFps(fps = 10, callback){
-    let frameCounter = 0;
-    let prevTime = 0;
     const frameMs = Math.round(1000 / fps);
+    let prevTime = 0;
 
-    const animatedCallback = (time)=>{
+    const animatedCallback = (time) =>{
         const dT = time - prevTime;
 
         if(dT>=frameMs) {
             prevTime = time;
             callback();
-            console.log('next frame', frameCounter++);
-            console.log('time', time);
-            console.log('dT', dT);
         }
+        
         requestAnimationFrame(animatedCallback);
     }
 
@@ -150,8 +143,7 @@ function start() {
     const gui = setGui(scene);
 
     resize(scene);
-    // animationLoop(scene);
-    runAnimationWithFps(60, ()=>animationLoop(scene));
+    runAnimationWithFps(60, _ => animationLoop(scene));
 
     window.addEventListener("resize", _ => resize(scene));
     window.addEventListener("mousemove", e => mousemove(e, scene));
