@@ -26,5 +26,4 @@ function animationLoop(canvasObject, sceneObject) {
     canvasObject.renderingContext2D.back.globalCompositeOperation = 'lighter';
     canvasObject.renderingContext2D.front.drawImage(canvasObject.canvas.back, 0, 0);
     canvasObject.renderingContext2D.front.restore();
-    requestAnimationFrame(() => animationLoop(canvasObject, sceneObject));
 }

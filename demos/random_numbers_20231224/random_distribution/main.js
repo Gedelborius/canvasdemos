@@ -117,7 +117,6 @@ function draw() {
 function update() {
     addResult();
     draw();
-    requestAnimationFrame(update);
 }
 
 function start() {
@@ -140,7 +139,7 @@ function start() {
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
     context.fillStyle = getPanelValue.resultColor();
 
-    update();
+    render(update)
 }
 
 start();

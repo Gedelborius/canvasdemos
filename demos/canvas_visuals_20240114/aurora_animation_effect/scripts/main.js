@@ -66,7 +66,7 @@ function start() {
     const gui = setGUI(canvasObject, sceneObject);
 
     resizeReset(canvasObject, sceneObject);
-    animationLoop(canvasObject, sceneObject);
+    render(_ => animationLoop(canvasObject, sceneObject));
     window.addEventListener("resize", () => resizeReset(canvasObject, sceneObject));
 }
 

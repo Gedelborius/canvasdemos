@@ -94,7 +94,6 @@ function animationLoop(scene) {
         p.draw(scene);
         linkPoints(p, arr, scene);
     }
-    requestAnimationFrame(_ => animationLoop(scene));
 }
 
 function resize(scene) {
@@ -149,7 +148,7 @@ function start() {
 
     createParticles(scene);
 
-    animationLoop(scene);
+    render(_ => animationLoop(scene))
 
     window.addEventListener("resize", _ => resize(scene));
 }

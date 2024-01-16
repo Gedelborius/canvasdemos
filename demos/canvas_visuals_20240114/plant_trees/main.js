@@ -110,7 +110,6 @@ function animationLoop(scene) {
         t.update(scene);
         t.draw(scene);
     }
-    requestAnimationFrame(_ => animationLoop(scene));
 }
 
 function drawGround(scene) {
@@ -146,7 +145,7 @@ function start() {
     scene.ctx = canvasHelper.context();
     const gui = setGui(scene);
     restart(scene);
-    animationLoop(scene);
+    render(_ => animationLoop(scene))
     window.addEventListener("resize", _ => restart(scene));
     scene.cvs.addEventListener("click", e => scene.trees.push(new Tree(scene, e.x)));
 }

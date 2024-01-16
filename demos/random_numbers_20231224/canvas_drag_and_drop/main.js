@@ -51,9 +51,10 @@ function draw() {
         false
     );
     context.fill();
-    requestAnimationFrame(draw);
 }
 
 document.body.addEventListener('mousedown', onMouseDown);
 
-draw();
+// draw();
+
+render(draw)

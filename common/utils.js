@@ -17,6 +17,24 @@ function initialization(startFunction) {
     }
 }
 
+function render(callback, fps = 60) {
+    const frameMs = Math.round(1000 / fps);
+    let prevTime = 0;
+
+    const animatedCallback = (time) =>{
+        const dT = time - prevTime;
+
+        if(dT >= frameMs) {
+            prevTime = time;
+            callback();
+        }
+        
+        requestAnimationFrame(animatedCallback);
+    }
+
+    requestAnimationFrame(animatedCallback);
+}
+
 function setBackgroundColorToBody(color) {
     document.querySelector('body').style.backgroundColor = color;
 }

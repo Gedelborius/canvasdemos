@@ -71,25 +71,6 @@ function animationLoop(scene) {
     drawScene(scene);;
 }
 
-function runAnimationWithFps(fps = 10, callback){
-    const frameMs = Math.round(1000 / fps);
-    let prevTime = 0;
-
-    const animatedCallback = (time) =>{
-        const dT = time - prevTime;
-
-        if(dT>=frameMs) {
-            prevTime = time;
-            callback();
-        }
-        
-        requestAnimationFrame(animatedCallback);
-    }
-
-    requestAnimationFrame(animatedCallback);
-}
-
-
 function mousemove(e, scene) {
     const w = scene.cvs.width;
     const h = scene.cvs.height;
@@ -143,7 +124,7 @@ function start() {
     const gui = setGui(scene);
 
     resize(scene);
-    runAnimationWithFps(60, _ => animationLoop(scene));
+    render(_ => animationLoop(scene));
 
     window.addEventListener("resize", _ => resize(scene));
     window.addEventListener("mousemove", e => mousemove(e, scene));

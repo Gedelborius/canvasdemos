@@ -72,8 +72,6 @@ function animationLoop(scene) {
         }
     }
     scene.particle.array = temp;
-
-    requestAnimationFrame(_ => animationLoop(scene));
 }
 
 function mousemove(scene, e) {
@@ -119,7 +117,7 @@ function start() {
     const gui = setGui(scene);
 
     resize(scene);
-    animationLoop(scene);
+    render(_ => animationLoop(scene))
 
     window.addEventListener("resize", _ => resize(scene));
     scene.cvs.addEventListener("mousemove", e => mousemove(scene, e));

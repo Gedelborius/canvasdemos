@@ -163,7 +163,7 @@ function update() {
             context.fill();
         }
     }
-    updateRequest = requestAnimationFrame(update);
+    // updateRequest = requestAnimationFrame(update);
 }
 
 function start() {
@@ -173,6 +173,7 @@ function start() {
     particles.length = 0;
     createParticles(getPanelValue.particlesNumber());
     update();
+    render(update);
 }
 
 start();
