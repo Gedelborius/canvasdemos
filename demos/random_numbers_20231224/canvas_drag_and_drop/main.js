@@ -55,6 +55,4 @@ function draw() {
 
 document.body.addEventListener('mousedown', onMouseDown);
 
-// draw();
-
 render(draw)
