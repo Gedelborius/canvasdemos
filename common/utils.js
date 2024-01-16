@@ -17,14 +17,14 @@ function initialization(startFunction) {
     }
 }
 
-function render(callback, fps = 60) {
+function render(executableFunction, fps = 60) {
     const interval = 1000 / fps;
     let thenTimeStamp = 0;
     const frameCallback = (nowTimeStamp) => {
         const deltaTime = nowTimeStamp - thenTimeStamp;
         if (deltaTime >= interval) {
             thenTimeStamp = nowTimeStamp - (deltaTime % interval);
-            callback();
+            executableFunction();
         }
         requestAnimationFrame(frameCallback);
     }
