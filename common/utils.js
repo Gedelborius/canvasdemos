@@ -17,22 +17,37 @@ function initialization(startFunction) {
     }
 }
 
-function render(callback, fps = 60) {
+function test_old(callback, fps = 60) {
     const frameMs = Math.round(1000 / fps);
     let prevTime = 0;
-
     const animatedCallback = (time) =>{
         const dT = time - prevTime;
-
-        if(dT >= frameMs) {
+        if (dT >= frameMs) {
             prevTime = time;
             callback();
         }
-        
         requestAnimationFrame(animatedCallback);
     }
-
     requestAnimationFrame(animatedCallback);
+}
+
+function test_new(callback, fps = 60) {
+    const interval = 1000 / fps;
+    let thenTimeStamp = 0;
+    const frameCallback = (nowTimeStamp) => {
+        const deltaTime = nowTimeStamp - thenTimeStamp;
+        if (deltaTime > interval) {
+            thenTimeStamp = nowTimeStamp - (deltaTime % interval);
+            callback();
+        }
+        requestAnimationFrame(frameCallback);
+    }
+    requestAnimationFrame(frameCallback);
+}
+
+function render(callback, fps = 30) {
+    test_old(callback);
+    // test_new(callback);
 }
 
 function setBackgroundColorToBody(color) {
