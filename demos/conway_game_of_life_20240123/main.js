@@ -48,17 +48,11 @@ function countSum(scene, x, y) {
         for (let j = -1; j < 2; j++) {
             let col = (x + i + c) % c,
                 row = (y + j + r) % r;
-
-            console.log(`column: ${col}; row: ${row}; state: ${scene.grid.array[col][row]}`);
-            // let row = (y + j + r) % r,
-            //     col = (x + i + c) % c;
-
             sum += scene.grid.array[col][row];
         }
     }
 
-
-
+    // вычитаем саму ячейку
     return sum - scene.grid.array[x][y];
 }
 
@@ -68,10 +62,14 @@ function drawCell(scene, x, y) {
     scene.ctx.fillRect(x * s, y * s, c, c)
 }
 
+function copyDeep(any){
+    return JSON.parse(JSON.stringify(any));
+}
+
 
 function step(scene) {
     const r = scene.grid.rows, c = scene.grid.columns;
-    let nextGrid = [...scene.grid.array];
+    let nextGrid = copyDeep(scene.grid.array);
     drawBackground(scene);
     // drawGrid(scene);
 
@@ -139,7 +137,7 @@ function start(scene) {
 }
 
 function init() {
-    let scene = setCanvas({ ...defaultParameters });
+    let scene = setCanvas({...defaultParameters});
     resizeCanvas(scene, 200, 100);
     start(scene);
 }
