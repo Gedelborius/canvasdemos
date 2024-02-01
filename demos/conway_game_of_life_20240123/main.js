@@ -1,120 +1,148 @@
 const defaultParameters = {
     cvs: null,
     ctx: null,
-    size: 10,
-    cols: null,
-    rows: null,
-    grid: null,
+    color: {
+        background: '#000000',
+        line: '#757575',
+        cell: '#ffffff'
+    },
+    grid: {
+        columns: null,
+        rows: null,
+        array: null
+    },
+    cell: {
+        size: 10,
+    },
 }
 
+let array = null;
+
+function drawBackground(scene) {
+    scene.ctx.fillStyle = scene.color.background;
+    scene.ctx.fillRect(0, 0, scene.cvs.width, scene.cvs.height);
+}
+
+function drawGrid(scene) {
+    scene.ctx.beginPath();
+    scene.ctx.globalAlpha = 1;
+    scene.ctx.lineWidth = 1;
+    scene.ctx.strokeStyle = scene.color.line;
+    for (let y = 0; y <= scene.cvs.height; y += scene.cell.size) {
+        scene.ctx.moveTo(0, y);
+        scene.ctx.lineTo(scene.cvs.width, y)
+    }
+    for (let x = 0; x <= scene.cvs.width; x += scene.cell.size) {
+        scene.ctx.moveTo(x, 0);
+        scene.ctx.lineTo(x, scene.cvs.height)
+    }
+    scene.ctx.stroke();
+    scene.ctx.closePath();
+}
+
+
 function countSum(scene, x, y) {
+    const r = scene.grid.rows, c = scene.grid.columns;
     let sum = 0;
     for (let i = -1; i < 2; i++) {
         for (let j = -1; j < 2; j++) {
-            let row = (y + j + scene.rows) % scene.rows,
-                col = (x + i + scene.cols) % scene.cols;
-            // if (scene.grid[row][col] === 1) {
-            //     sum++;
-            // }
-            sum += scene.grid[row][col];
+            let col = (x + i + c) % c,
+                row = (y + j + r) % r;
+
+            console.log(`column: ${col}; row: ${row}; state: ${scene.grid.array[col][row]}`);
+            // let row = (y + j + r) % r,
+            //     col = (x + i + c) % c;
+
+            sum += scene.grid.array[col][row];
         }
     }
-    // if (scene.grid[x][y] === 1) {
-    //     sum--;
-    // }
-    return sum - scene.grid[x][y];
+
+
+
+    return sum - scene.grid.array[x][y];
 }
 
-function draw(scene) {
-    let next = [...scene.grid];
+function drawCell(scene, x, y) {
+    const s = scene.cell.size, c = s - 1;
+    scene.ctx.fillStyle = scene.color.cell;
+    scene.ctx.fillRect(x * s, y * s, c, c)
+}
 
-    scene.ctx.fillStyle = 'black';
-    scene.ctx.fillRect(0, 0, scene.cvs.width, scene.cvs.height);
 
-    for (let i = 0; i < scene.rows; i++) {
-        for (let j = 0; j < scene.cols; j++) {
+function step(scene) {
+    const r = scene.grid.rows, c = scene.grid.columns;
+    let nextGrid = [...scene.grid.array];
+    drawBackground(scene);
+    // drawGrid(scene);
 
-            const sum = countSum(scene, i, j);
-            const state = scene.grid[i][j];
-            // console.log(`i: ${i}; j: ${j}; state: ${state} sum: ${sum}`)
-            // console.log(`i = ${i}; j = ${j}; state = ${state}`)
-            // console.log(sum)
+    for (let x = 0; x < c; x++) {
+        for (let y = 0; y < r; y++) {
+            const sum = countSum(scene, x, y),
+                state = scene.grid.array[x][y];
 
-            // if (state === 0 && sum === 3) {
-            //     next[i][j] = 1;
-            // } else if (state === 1 && sum < 2) {
-            //     next[i][j] = 0;
-            // } else if (state === 1 && sum > 3) {
-            //     next[i][j] = 0;
-            // } else {
-            //     next[i][j] = state;
-            // }
+            console.log(
+                `x: ${x}; y: ${y}; sum: ${sum}`
+            )
 
             if (state === 0 && sum === 3) {
-                next[i][j] = 1;
+                nextGrid[x][y] = 1;
             } else if (state === 1) {
-                scene.ctx.fillStyle = 'white'
-                scene.ctx.fillRect(j * scene.size, i * scene.size, scene.size - 1, scene.size - 1);
+                drawCell(scene, x, y);
                 if (sum < 2 || sum > 3) {
-                    next[i][j] = 0;
+                    nextGrid[x][y] = 0;
                 }
             }
-
-            // console.log(next)
-            // if (state !== 1 && sum === 3) {
-            //     next[i][j] = 1;
-            // } else if (state !== 0 && (sum < 2 || sum > 3)) {
-            //     next[i][j] = 0;
-            // }
-            // else {
-            //     next[i][j] = state;
-            // }
-
-            // draw white rect -1 of size if [x,y] = 1 
-            // if (state === 1) {
-            //     scene.ctx.fillStyle = 'white'
-            //     scene.ctx.fillRect(j * scene.size, i * scene.size, scene.size - 1, scene.size - 1);
-            // }
         }
     }
 
-    scene.grid = next;
+    // console.log(nextGrid)
+
+    // scene.grid.array = nextGrid;
 }
 
-function makeGrid(scene) {
-    let newGrid = [];
-    for (let i = 0; i < scene.rows; i++) {
-        let newRow = [];
-        for (let j = 0; j < scene.cols; j++) {
-            newRow.push(getRandomInt(0, 1));
-        }
-        newGrid.push(newRow);
-    }
-    console.log(newGrid)
-    return newGrid;
-    // console.log()
-}
-
-function start() {
-    let scene = { ...defaultParameters };
+function setCanvas(scene) {
     canvasHelper.create.canvas();
     canvasHelper.setContext();
     scene.cvs = canvasHelper.canvas();
-    scene.cvs.width = 600;
-    scene.cvs.height = 400;
-    canvasHelper.insertBeforeFirst.canvas();
-
-
-    // scene.cvs.width = window.innerWidth;
-    // scene.cvs.height = window.innerHeight;
-
     scene.ctx = canvasHelper.context();
-    scene.cols = scene.cvs.width / scene.size;
-    scene.rows = scene.cvs.height / scene.size;
-    scene.grid = makeGrid(scene);
-
-    render(_ => draw(scene), 3);
-    // draw(scene);
+    canvasHelper.insertBeforeFirst.canvas();
+    return scene;
 }
 
-initialization(start);
+function resizeCanvas(scene, width, height) {
+    scene.cvs.width = width;
+    scene.cvs.height = height;
+}
+
+function makeGrid(scene) {
+    const c = scene.grid.columns, r = scene.grid.rows;
+    let grid = [];
+    for (let x = 0; x < c; x++) {
+        let col = [];
+        for (let y = 0; y < r; y++) {
+            col.push(getRandomInt(0, 1));
+        }
+        grid.push(col);
+    }
+    return grid;
+}
+
+function start(scene) {
+    scene.grid.columns = scene.cvs.width / scene.cell.size;
+    scene.grid.rows = scene.cvs.height / scene.cell.size;
+    scene.grid.array = makeGrid(scene);
+    array = scene.grid.array;
+    console.log('grid array: ', scene.grid.array);
+    // console.log(scene)
+    // render(_ => step(scene), 1);
+    step(scene)
+}
+
+function init() {
+    let scene = setCanvas({ ...defaultParameters });
+    resizeCanvas(scene, 200, 100);
+    start(scene);
+}
+
+
+initialization(init);
