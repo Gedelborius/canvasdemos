@@ -59,31 +59,6 @@ function countSum(scene, x, y) {
     return sum - scene.grid.array[x][y];
 }
 
-/** из нейронки, надо тестить **/
-function sumAround(array, targetCol, targetRow) {
-    let sum = 0;
-
-    // Перебираем клетки вокруг заданной, включая диагонали
-    for (let colOffset = -1; colOffset <= 1; colOffset++) {
-        for (let rowOffset = -1; rowOffset <= 1; rowOffset++) {
-            // Вычисляем координаты текущей ячейки
-            let currentCol = targetCol + colOffset;
-            let currentRow = targetRow + rowOffset;
-
-            // Проверяем, что координаты находятся в пределах массива
-            if (currentCol >= 0 && currentCol < array.length && currentRow >= 0 && currentRow < array[currentCol].length) {
-                // Исключаем саму заданную ячейку из суммы
-                if (!(colOffset === 0 && rowOffset === 0)) {
-                    sum += array[currentCol][currentRow];
-                }
-            }
-        }
-    }
-    return sum;
-}
-
-
-
 function drawCell(scene, x, y) {
     const s = scene.cell.size, c = s - 1;
     scene.ctx.fillStyle = scene.color.cell;
@@ -93,13 +68,16 @@ function drawCell(scene, x, y) {
 
 function step(scene) {
     const rows = scene.grid.rows, columns = scene.grid.columns;
-    let nextGrid = [...scene.grid.array];
+    let prevArray = scene.grid.array;
+    let nextGrid = JSON.parse(JSON.stringify(scene.grid.array))
     drawBackground(scene);
     // drawGrid(scene);
 
+
+
     for (let col = 0; col < columns; col++) {
         for (let row = 0; row < rows; row++) {
-            const sum = countSum(scene, col, row),
+            const sum = sumAround(prevArray, col, row),
                 state = scene.grid.array[col][row];
 
             console.log(
@@ -119,7 +97,7 @@ function step(scene) {
 
     // console.log(nextGrid)
 
-    // scene.grid.array = nextGrid;
+    scene.grid.array = nextGrid;
 }
 
 function setCanvas(scene) {

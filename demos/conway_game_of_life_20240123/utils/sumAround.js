@@ -1,4 +1,3 @@
-/** из нейронки, надо тестить **/
 function sumAround(array, targetCol, targetRow) {
     let sum = 0;
 
@@ -19,8 +18,4 @@ function sumAround(array, targetCol, targetRow) {
         }
     }
     return sum;
-}
-
-module.exports = {
-    sumAround
 }
