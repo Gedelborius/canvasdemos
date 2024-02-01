@@ -56,11 +56,33 @@ function countSum(scene, x, y) {
             sum += scene.grid.array[col][row];
         }
     }
-
-
-
     return sum - scene.grid.array[x][y];
 }
+
+/** из нейронки, надо тестить **/
+function sumAround(array, targetCol, targetRow) {
+    let sum = 0;
+
+    // Перебираем клетки вокруг заданной, включая диагонали
+    for (let colOffset = -1; colOffset <= 1; colOffset++) {
+        for (let rowOffset = -1; rowOffset <= 1; rowOffset++) {
+            // Вычисляем координаты текущей ячейки
+            let currentCol = targetCol + colOffset;
+            let currentRow = targetRow + rowOffset;
+
+            // Проверяем, что координаты находятся в пределах массива
+            if (currentCol >= 0 && currentCol < array.length && currentRow >= 0 && currentRow < array[currentCol].length) {
+                // Исключаем саму заданную ячейку из суммы
+                if (!(colOffset === 0 && rowOffset === 0)) {
+                    sum += array[currentCol][currentRow];
+                }
+            }
+        }
+    }
+    return sum;
+}
+
+
 
 function drawCell(scene, x, y) {
     const s = scene.cell.size, c = s - 1;
@@ -70,26 +92,26 @@ function drawCell(scene, x, y) {
 
 
 function step(scene) {
-    const r = scene.grid.rows, c = scene.grid.columns;
+    const rows = scene.grid.rows, columns = scene.grid.columns;
     let nextGrid = [...scene.grid.array];
     drawBackground(scene);
     // drawGrid(scene);
 
-    for (let x = 0; x < c; x++) {
-        for (let y = 0; y < r; y++) {
-            const sum = countSum(scene, x, y),
-                state = scene.grid.array[x][y];
+    for (let col = 0; col < columns; col++) {
+        for (let row = 0; row < rows; row++) {
+            const sum = countSum(scene, col, row),
+                state = scene.grid.array[col][row];
 
             console.log(
-                `x: ${x}; y: ${y}; sum: ${sum}`
+                `x: ${col}; y: ${row}; sum: ${sum}`
             )
 
             if (state === 0 && sum === 3) {
-                nextGrid[x][y] = 1;
+                nextGrid[col][row] = 1;
             } else if (state === 1) {
-                drawCell(scene, x, y);
+                drawCell(scene, col, row);
                 if (sum < 2 || sum > 3) {
-                    nextGrid[x][y] = 0;
+                    nextGrid[col][row] = 0;
                 }
             }
         }
@@ -134,7 +156,7 @@ function start(scene) {
     array = scene.grid.array;
     console.log('grid array: ', scene.grid.array);
     // console.log(scene)
-    // render(_ => step(scene), 1);
+    render(_ => step(scene), 1);
     step(scene)
 }
 
@@ -143,6 +165,5 @@ function init() {
     resizeCanvas(scene, 200, 100);
     start(scene);
 }
-
 
 initialization(init);

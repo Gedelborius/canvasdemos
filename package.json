@@ -1,0 +1,23 @@
+{
+  "name": "canvasdemos",
+  "version": "1.0.0",
+  "description": "[Link to site (GitHub Pages)](https://gedelborius.github.io/canvasdemos/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gedelborius/canvasdemos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gedelborius/canvasdemos/issues"
+  },
+  "homepage": "https://github.com/Gedelborius/canvasdemos#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
