@@ -48,28 +48,3 @@ function sumOfAdjacentCells(array2D, columnOrigin, rowOrigin, offset = { min: -1
 
     return sum - array2D[columnOrigin][rowOrigin];
 }
-
-/*
-
-function sumOfAdjacentCells(matrix, row, col) {
-    let sum = 0;
-    for (let i = -1; i <= 1; i++) {
-        for (let j = -1; j <= 1; j++) {
-            if (i === 0 && j === 0) continue; // Skip the cell itself
-            if (row + i >= 0 && row + i < matrix.length && col + j >= 0 && col + j < matrix[0].length) {
-                sum += matrix[row + i][col + j];
-            }
-        }
-    }
-    return sum;
-}
-
-// Example usage:
-let matrix = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-];
-console.log(sumOfAdjacentCells(matrix, 1, 1)); // Output: 40
-
-*/
