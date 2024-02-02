@@ -12,9 +12,22 @@ const defaultParameters = {
         array: null
     },
     cell: {
-        size: 10,
+        size: 1,
     },
 }
+
+const testArrayGlider = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]
 
 
 /**  TODO
@@ -56,7 +69,7 @@ function drawGrid(scene) {
 function drawCell(scene, x, y) {
     const s = scene.cell.size, c = s - 1;
     scene.ctx.fillStyle = scene.color.cell;
-    scene.ctx.fillRect(x * s, y * s, c, c)
+    scene.ctx.fillRect(x * s, y * s, s, s)
 }
 
 function copyDeep(any) {
@@ -111,14 +124,15 @@ function start(scene) {
     scene.grid.columns = scene.cvs.width / scene.cell.size;
     scene.grid.rows = scene.cvs.height / scene.cell.size;
 
-    scene.grid.array = makeGrid(scene.grid.columns, scene.grid.rows);
+    // scene.grid.array = makeGrid(scene.grid.columns, scene.grid.rows);
+    scene.grid.array = testArrayGlider;
 
     render(_ => step(scene), 1);
 }
 
 function init() {
     let scene = setCanvas({ ...defaultParameters });
-    resizeCanvas(scene, 600, 480);
+    resizeCanvas(scene, 10, 10);
     start(scene);
 }
 
