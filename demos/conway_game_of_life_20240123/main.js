@@ -1,6 +1,9 @@
+
 const defaultParameters = {
     cvs: null,
     ctx: null,
+    width: 600,
+    height: 400,
     color: {
         background: '#000000',
         line: '#757575',
@@ -15,35 +18,6 @@ const defaultParameters = {
         size: 1,
     },
 }
-
-// original - https://en.wikipedia.org/wiki/File:Game_of_life_animated_glider.gif
-const testArrayGlider = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-]
-
-
-/**  TODO
- * для тестов
- *  заполни его простой фигурой из вики
- *  - 1 неподвижная
- *  - 1 подвижная
- *  - комбинация фигур 1 + 1
- *  можешь таких тестовых сделать несколько и держать в отдельном файле
- *  **/
-const testArray1 = [
-    [],
-    [],
-    [],
-]
 
 function drawBackground(scene) {
     scene.ctx.fillStyle = scene.color.background;
