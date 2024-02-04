@@ -20,10 +20,15 @@ function drawGrid(scene) {
     scene.ctx.closePath();
 }
 
-function drawCell(scene, x, y) {
+function drawCell(scene, column, row) {
     const s = scene.cell.size, c = s - 1;
     scene.ctx.fillStyle = scene.color.cell;
-    scene.ctx.fillRect(x * s, y * s, s, s)
+    scene.ctx.fillRect(
+        row * scene.cell.width,
+        column * scene.cell.height,
+        scene.cell.width,
+        scene.cell.height
+    );
 }
 
 function copyDeep(any) {
@@ -81,14 +86,19 @@ function resizeCanvas(canvas, width, height) {
 function start(scene) {
 
     // scene.grid.array = makeGrid(scene.cvs.width / scene.cell.size, scene.cvs.height / scene.cell.size);
-    scene.grid.array = testArrayGlider;
+    scene.grid.array = makeGrid(23, 17);
+    // scene.grid.array = testArrayGliders10x10;
+    scene.cell.width = scene.cvs.width / scene.grid.array[0].length;
+    scene.cell.height = scene.cvs.height / scene.grid.array.length;
+    console.log(scene.grid.array)
 
-    render(_ => step(scene), 1);
+    // step(scene);
+    render(_ => step(scene), 10);
 }
 
 function init() {
-    let scene = setCanvas({ ...defaultParameters });
-    resizeCanvas(scene.cvs, 10, 10);
+    let scene = setCanvas({ ...defaultSettings });
+    resizeCanvas(scene.cvs, 1920, 1080);
     start(scene);
 }
 

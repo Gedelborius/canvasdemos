@@ -13,6 +13,8 @@ const defaultSettings = {
         array: null
     },
     cell: {
+        width: 1,
+        height: 1,
         size: 1,
     },
 }
