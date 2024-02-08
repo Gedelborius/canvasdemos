@@ -86,11 +86,13 @@ function resizeCanvas(canvas, width, height) {
 function start(scene) {
 
     // scene.grid.array = makeGrid(scene.cvs.width / scene.cell.size, scene.cvs.height / scene.cell.size);
-    scene.grid.array = makeGrid(23, 17);
+    scene.grid.array = makeGrid(10, 10);
+
     // scene.grid.array = testArrayGliders10x10;
     scene.cell.width = scene.cvs.width / scene.grid.array[0].length;
     scene.cell.height = scene.cvs.height / scene.grid.array.length;
-    console.log(scene.grid.array)
+
+    console.log(scene.grid.array);
 
     // step(scene);
     render(_ => step(scene), 10);
