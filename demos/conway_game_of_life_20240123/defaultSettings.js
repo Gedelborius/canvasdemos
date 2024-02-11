@@ -1,4 +1,3 @@
-
 const defaultSettings = {
     cvs: null,
     ctx: null,
@@ -9,12 +8,17 @@ const defaultSettings = {
         line: '#757575',
         cell: '#ffffff'
     },
-    grid: {
-        array: null
-    },
-    cell: {
-        width: 1,
-        height: 1,
-        size: 1,
-    },
+    model: {
+        columns: 10,
+        rows: 10,
+        grid: null,
+        cell: {
+            width: null,
+            height: null,
+        },
+        field: {
+            width: null,
+            height: null,
+        }
+    }
 }
