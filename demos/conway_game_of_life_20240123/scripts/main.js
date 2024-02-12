@@ -53,7 +53,6 @@ function step(scene) {
 
             } else if (state === 1) {
                 drawCell(scene, column, row);
-
                 if (sum < 2 || sum > 3) {
                     nextGrid[column][row] = 0;
                 }
@@ -89,6 +88,22 @@ function setGUI(scene) {
     for (let i = 0; i < colorsKeys.length; i++) {
         fColors.addColor(scene.color, colorsKeys[i]);
     }
+    const fGameSettings = gui.addFolder('Game Settings');
+    fGameSettings.add(
+        scene,
+        'stepsPerSecond',
+        1,
+        60
+    ).onChange(_ => {
+        render.set.fps(scene.speed);
+        render.restart();
+    })
+    // movesPerSecond.name('test')
+    //     .onChange(_ => {
+    //         render.set.fps(scene.speed);
+    //         render.restart();
+    //     });
+
     return gui;
 }
 
@@ -97,7 +112,7 @@ function start(scene) {
     scene.model.cell.width = scene.cvs.width / scene.model.grid[0].length;
     scene.model.cell.height = scene.cvs.height / scene.model.grid.length;
     const gui = setGUI(scene);
-    render(_ => step(scene), 10);
+    render.start(_ => step(scene), scene.stepsPerSecond);
 }
 
 function init() {

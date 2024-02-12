@@ -3,6 +3,7 @@ const defaultSettings = {
     ctx: null,
     width: 600,
     height: 400,
+    stepsPerSecond: 10,
     color: {
         background: '#000000',
         line: '#757575',
