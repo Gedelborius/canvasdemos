@@ -16,6 +16,7 @@ const defaultSettings = {
         cell: {
             width: null,
             height: null,
+            isEllipse: false,
         },
         field: {
             width: null,

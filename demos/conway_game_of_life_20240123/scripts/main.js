@@ -20,14 +20,35 @@ function drawGrid(scene) {
     scene.ctx.closePath();
 }
 
-function drawCell(scene, column, row) {
-    scene.ctx.fillStyle = scene.color.cell;
-    scene.ctx.fillRect(
-        row * scene.model.cell.width,
-        column * scene.model.cell.height,
-        scene.model.cell.width,
-        scene.model.cell.height
-    );
+function drawCell(ctx, column, row, width, height, color, isEllipse = false) {
+    const x = row * width,
+        y = column * height;
+    ctx.fillStyle = color;
+    if (isEllipse) {
+        const radiusX = width / 2,
+            radiusY = height / 2,
+            centerX = x + radiusX,
+            centerY = y + radiusY;
+        ctx.beginPath();
+        ctx.ellipse(
+            centerX,
+            centerY,
+            radiusX,
+            radiusY,
+            0,
+            0,
+            Math.PI * 2
+        );
+        ctx.fill();
+        ctx.closePath();
+    } else {
+        ctx.fillRect(
+            x,
+            y,
+            width,
+            height
+        );
+    }
 }
 
 function copyDeep(any) {
@@ -52,7 +73,15 @@ function step(scene) {
                 nextGrid[column][row] = 1;
 
             } else if (state === 1) {
-                drawCell(scene, column, row);
+                drawCell(
+                    scene.ctx,
+                    column,
+                    row,
+                    scene.model.cell.width,
+                    scene.model.cell.height,
+                    scene.color.cell,
+                    scene.model.cell.isEllipse
+                );
                 if (sum < 2 || sum > 3) {
                     nextGrid[column][row] = 0;
                 }
@@ -98,12 +127,11 @@ function setGUI(scene) {
         render.set.fps(scene.speed);
         render.restart();
     })
-    // movesPerSecond.name('test')
-    //     .onChange(_ => {
-    //         render.set.fps(scene.speed);
-    //         render.restart();
-    //     });
-
+    const fModelSettings = gui.addFolder('Model Settings');
+    const fCell = fModelSettings.add(
+        scene.model.cell,
+        'isEllipse',
+    )
     return gui;
 }
 
