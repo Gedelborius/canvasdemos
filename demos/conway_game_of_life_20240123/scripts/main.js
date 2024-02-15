@@ -110,35 +110,21 @@ function resizeCanvas(canvas, width, height) {
     canvas.height = height;
 }
 
-function setGUI(scene) {
-    const gui = new dat.GUI();
-    const fColors = gui.addFolder('Colors');
-    const colorsKeys = Object.keys(scene.color);
-    for (let i = 0; i < colorsKeys.length; i++) {
-        fColors.addColor(scene.color, colorsKeys[i]);
-    }
-    const fGameSettings = gui.addFolder('Game Settings');
-    fGameSettings.add(
-        scene,
-        'stepsPerSecond',
-        1,
-        60
-    ).onChange(_ => {
-        render.set.fps(scene.speed);
-        render.restart();
-    })
-    const fModelSettings = gui.addFolder('Model Settings');
-    const fCell = fModelSettings.add(
-        scene.model.cell,
-        'isEllipse',
-    )
-    return gui;
-}
-
 function start(scene) {
+    let stop = false;
     scene.model.grid = makeGrid(scene.model.columns, scene.model.rows);
     scene.model.cell.width = scene.cvs.width / scene.model.grid[0].length;
     scene.model.cell.height = scene.cvs.height / scene.model.grid.length;
+    interface.addButton(
+        _ => {
+            if (stop) {
+                render.start();
+            } else {
+                render.stop();
+            }
+            stop = !stop;
+        }
+    );
     const gui = setGUI(scene);
     render.start(_ => step(scene), scene.stepsPerSecond);
 }
