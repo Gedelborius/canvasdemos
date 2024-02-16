@@ -1,9 +1,10 @@
 const defaultSettings = {
     cvs: null,
     ctx: null,
+    pause: false,
     width: 600,
     height: 400,
-    stepsPerSecond: 10,
+    stepsPerSecond: 144,
     color: {
         background: '#000000',
         line: '#757575',
@@ -16,7 +17,7 @@ const defaultSettings = {
         cell: {
             width: null,
             height: null,
-            isEllipse: false,
+            isEllipse: true,
         },
         field: {
             width: null,

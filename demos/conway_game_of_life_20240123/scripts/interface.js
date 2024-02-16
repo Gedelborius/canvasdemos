@@ -12,6 +12,7 @@ function setGUI(scene) {
         1,
         60
     ).onChange(_ => {
+        scene.pause = false;
         render.set.fps(scene.speed);
         render.restart();
     })
