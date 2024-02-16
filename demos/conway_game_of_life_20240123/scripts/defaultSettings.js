@@ -4,7 +4,7 @@ const defaultSettings = {
     pause: false,
     width: 600,
     height: 400,
-    stepsPerSecond: 144,
+    stepsPerSecond: 2,
     color: {
         background: '#000000',
         line: '#757575',
