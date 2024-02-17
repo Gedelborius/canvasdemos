@@ -3,22 +3,22 @@ function drawBackground(scene) {
     scene.ctx.fillRect(0, 0, scene.cvs.width, scene.cvs.height);
 }
 
-function drawGrid(scene) {
-    scene.ctx.beginPath();
-    scene.ctx.globalAlpha = 1;
-    scene.ctx.lineWidth = 1;
-    scene.ctx.strokeStyle = scene.color.line;
-    for (let y = 0; y <= scene.cvs.height; y += scene.cell.size) {
-        scene.ctx.moveTo(0, y);
-        scene.ctx.lineTo(scene.cvs.width, y)
-    }
-    for (let x = 0; x <= scene.cvs.width; x += scene.cell.size) {
-        scene.ctx.moveTo(x, 0);
-        scene.ctx.lineTo(x, scene.cvs.height)
-    }
-    scene.ctx.stroke();
-    scene.ctx.closePath();
-}
+// function drawGrid(scene) {
+//     scene.ctx.beginPath();
+//     scene.ctx.globalAlpha = 1;
+//     scene.ctx.lineWidth = 1;
+//     scene.ctx.strokeStyle = scene.color.line;
+//     for (let y = 0; y <= scene.cvs.height; y += scene.cell.size) {
+//         scene.ctx.moveTo(0, y);
+//         scene.ctx.lineTo(scene.cvs.width, y)
+//     }
+//     for (let x = 0; x <= scene.cvs.width; x += scene.cell.size) {
+//         scene.ctx.moveTo(x, 0);
+//         scene.ctx.lineTo(x, scene.cvs.height)
+//     }
+//     scene.ctx.stroke();
+//     scene.ctx.closePath();
+// }
 
 function drawCell(ctx, column, row, width, height, color, isEllipse = false) {
     const x = row * width,
@@ -105,34 +105,92 @@ function setCanvas(scene) {
     return scene;
 }
 
-function resizeCanvas(canvas, width, height) {
-    canvas.width = width;
-    canvas.height = height;
+function resizeCanvas(scene,
+    // width, height
+) {
+
+    // Get the device pixel ratio
+    const pixelRatio = window.devicePixelRatio || 1;
+
+    // Get the viewport size
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Set the canvas size to the viewport size multiplied by the pixel ratio
+    scene.cvs.width = viewportWidth * pixelRatio;
+    scene.cvs.height = viewportHeight * pixelRatio;
+
+    // Scale the canvas by the pixel ratio
+    scene.cvs.style.width = viewportWidth + 'px';
+    scene.cvs.style.height = viewportHeight + 'px';
+
+    // canvas.width = width;
+    // canvas.height = height;
+}
+
+function setStopButton(scene) {
+    const body = document.querySelector('body');
+    const button = document.createElement('button');
+    body.insertBefore(button, body.firstChild);
+    button.setAttribute(
+        'style',
+        'position:absolute;top:0;left:0;'
+    )
+    const style = 'position:absolute;top:0;left:0;';
+    // const button = interface.addButton(
+    //     true,
+    //     style
+    // );
+
+    button.innerHTML = 'PAUSE GAME';
+
+    button.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (scene.pause) {
+            render.start();
+            button.innerHTML = 'PAUSE GAME';
+        } else {
+            render.stop();
+            button.innerHTML = 'CONTINUE GAME';
+        }
+        scene.pause = !scene.pause;
+    });
+}
+
+function setRestartButton(scene) {
+
+}
+
+function setButtonsContainer() {
+    const body = document.querySelector('body');
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.setAttribute(
+        'style',
+        'position:absolute;top:0;left:0;'
+    )
+    body.insertBefore(button, body.firstChild);
+    return buttonsContainer;
+}
+
+function setCellSize(scene) {
+    scene.model.cell.width = scene.cvs.width / scene.model.grid[0].length;
+    scene.model.cell.height = scene.cvs.height / scene.model.grid.length;
 }
 
 function start(scene) {
-    const buttonCallback = _ => {
-        _ => {
-            if (scene.pause) {
-                render.start();
-            } else {
-                render.stop();
-            }
-            scene.pause = !scene.pause;
-        }
-    };
-    const buttonInsertFirst = true;
-    const buttonStyle = ' position:absolute;top:0;left:0;';
 
-    interface.addButton(
-        buttonCallback,
-        buttonInsertFirst,
-        buttonStyle
-    );
+    setStopButton(scene);
+
+    function resizeCallback() {
+        resizeCanvas(scene);
+        setCellSize(scene);
+    }
+
+    window.addEventListener("resize", resizeCallback);
 
     scene.model.grid = makeGrid(scene.model.columns, scene.model.rows);
-    scene.model.cell.width = scene.cvs.width / scene.model.grid[0].length;
-    scene.model.cell.height = scene.cvs.height / scene.model.grid.length;
+    setCellSize(scene);
 
     const gui = setGUI(scene);
     render.start(_ => step(scene), scene.stepsPerSecond);
@@ -140,7 +198,9 @@ function start(scene) {
 
 function init() {
     let scene = setCanvas({ ...defaultSettings });
-    resizeCanvas(scene.cvs, 1920, 1080);
+    const buttonsContainer = setButtonsContainer();
+    resizeCanvas(scene);
+    // resizeCanvas(scene.cvs, 1920, 1080);
     start(scene);
 }
 

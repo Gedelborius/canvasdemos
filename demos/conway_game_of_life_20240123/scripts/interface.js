@@ -26,17 +26,9 @@ function setGUI(scene) {
 
 const interface = (_ => {
 
-    function addButton(completionCallback, insertFirst = false, styleString = null) {
+    function addButton(insertFirst = false, styleString = null) {
         const body = document.querySelector('body');
         const button = document.createElement('button');
-
-        button.innerHTML = 'STOP STEPS';
-
-        button.addEventListener('click', function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            completionCallback();
-        });
 
         if (styleString !== null && typeof styleString === 'string') {
             button.setAttribute(
