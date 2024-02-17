@@ -51,9 +51,15 @@ function drawCell(ctx, column, row, width, height, color, isEllipse = false) {
     }
 }
 
+/**
+ * Глубокое копирование объекта или любой другой структуры данных.
+ * @param {*} any - Объект или структура данных для копирования.
+ * @returns {*} Глубокая копия исходного объекта или структуры данных.
+ */
 function copyDeep(any) {
     return JSON.parse(JSON.stringify(any));
 }
+
 
 
 function step(scene) {
