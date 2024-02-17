@@ -26,18 +26,32 @@ function setGUI(scene) {
 
 const interface = (_ => {
 
-    function addButton(completionCallback) {
+    function addButton(completionCallback, insertFirst = false, styleString = null) {
         const body = document.querySelector('body');
         const button = document.createElement('button');
+
         button.innerHTML = 'STOP STEPS';
+
         button.addEventListener('click', function (event) {
-            console.log('click!')
             event.preventDefault();
             event.stopPropagation();
             completionCallback();
         });
-        // body.appendChild(button);
-        body.insertBefore(button, body.firstChild);
+
+        if (styleString !== null && typeof styleString === 'string') {
+            button.setAttribute(
+                'style',
+                styleString
+            )
+        }
+
+        if (insertFirst) {
+            body.insertBefore(button, body.firstChild);
+        } else {
+            body.appendChild(button);
+        }
+
+        return button;
     }
 
     return {

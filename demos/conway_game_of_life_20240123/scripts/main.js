@@ -111,7 +111,7 @@ function resizeCanvas(canvas, width, height) {
 }
 
 function start(scene) {
-    interface.addButton(
+    const buttonCallback = _ => {
         _ => {
             if (scene.pause) {
                 render.start();
@@ -120,21 +120,20 @@ function start(scene) {
             }
             scene.pause = !scene.pause;
         }
+    };
+    const buttonInsertFirst = true;
+    const buttonStyle = ' position:absolute;top:0;left:0;';
+
+    interface.addButton(
+        buttonCallback,
+        buttonInsertFirst,
+        buttonStyle
     );
 
     scene.model.grid = makeGrid(scene.model.columns, scene.model.rows);
     scene.model.cell.width = scene.cvs.width / scene.model.grid[0].length;
     scene.model.cell.height = scene.cvs.height / scene.model.grid.length;
 
-    scene.cvs.addEventListener('click', function (event) {
-        // event.preventDefault();
-        event.stopPropagation();
-        console.log('Click on canvas: ');
-        // console.log('Event: ', event);
-        console.log(`event.clientX: ${event.clientX}; event.clientY: ${event.clientY}`);
-        // const column = event.clientY ;
-
-    });
     const gui = setGUI(scene);
     render.start(_ => step(scene), scene.stepsPerSecond);
 }

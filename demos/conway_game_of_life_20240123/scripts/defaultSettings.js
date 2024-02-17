@@ -6,9 +6,8 @@ const defaultSettings = {
     height: 400,
     stepsPerSecond: 2,
     color: {
-        background: '#000000',
-        line: '#757575',
-        cell: '#ffffff'
+        background: '#ffffff',
+        cell: '#000000'
     },
     model: {
         columns: 10,
