@@ -6,14 +6,15 @@ function setGUI(scene) {
         fColors.addColor(scene.color, colorsKeys[i]);
     }
     const fGameSettings = gui.addFolder('Game Settings');
+    const speedKey = 'stepsPerSecond';
     fGameSettings.add(
         scene,
-        'stepsPerSecond',
+        speedKey,
         1,
         60
     ).onChange(_ => {
         scene.pause = false;
-        render.set.fps(scene.speed);
+        render.set.fps(scene[speedKey]);
         render.restart();
     })
     const fModelSettings = gui.addFolder('Model Settings');
