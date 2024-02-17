@@ -12,6 +12,9 @@ const defaultSettings = {
     model: {
         columns: 10,
         rows: 10,
+        /**
+         * @type {number[][]} grid - двухмерный массив чисел
+         */
         grid: null,
         cell: {
             width: null,

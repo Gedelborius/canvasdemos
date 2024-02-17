@@ -17,6 +17,14 @@ function setGUI(scene) {
         render.set.fps(scene[speedKey]);
         render.restart();
     })
+
+    /***
+     *  todo
+     *  рестарт для нового шаблона можно организовать таким же образом
+     *  просто обновляем модель
+     *  и делаем рестарт рендера
+     */
+
     const fModelSettings = gui.addFolder('Model Settings');
     const fCell = fModelSettings.add(
         scene.model.cell,
