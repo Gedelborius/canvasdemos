@@ -83,6 +83,10 @@ function setCanvas(scene) {
     canvasHelper.create.canvas();
     canvasHelper.setContext();
     scene.cvs = canvasHelper.canvas();
+    scene.cvs.setAttribute(
+        'style',
+        ' display: flex; justify-content: center; align-items: center; width: 100%;  height: 100vh; image-rendering: pixelated; image-rendering: crisp-edges;'
+    )
     scene.ctx = canvasHelper.context();
     canvasHelper.insertBeforeFirst.canvas();
     return scene;
