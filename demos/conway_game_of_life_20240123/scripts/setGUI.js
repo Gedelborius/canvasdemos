@@ -8,7 +8,7 @@ function setGUI(scene) {
         ['Pure Random', 'Glider', 'Two Gliders', 'Static Figures', 'Dynamic Figures', 'Gosper Glider Gun'],
     ).onChange(string => {
         if (string === 'Pure Random') {
-            scene.start(scene, null);
+            scene.start(scene);
         } else {
             scene.start(scene, { grid: gridPresets[string] });
         }
