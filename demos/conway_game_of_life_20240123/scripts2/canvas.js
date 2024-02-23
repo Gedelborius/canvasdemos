@@ -1,5 +1,5 @@
 function getCanvas(){
-    return document.getElementById('#canvas');
+    return document.getElementById('canvas');
 }
 
 function getContext(){
