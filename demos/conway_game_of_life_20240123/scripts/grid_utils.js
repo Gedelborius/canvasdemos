@@ -23,7 +23,7 @@ function makeGrid(columns, rows, cellRange = { min: 0, max: 1 }) {
     return grid;
 }
 
-function sumOfAdjacentCells(array2D, columnOrigin, rowOrigin, offset = { min: -1, max: 2 }, isEdgesAdjacent = true) {
+function sumOfAdjacentCells(array2D, columnOrigin, rowOrigin, isEdgesAdjacent = true, offset = { min: -1, max: 2 },) {
 
     const columns = array2D.length, rows = array2D[0].length;
 

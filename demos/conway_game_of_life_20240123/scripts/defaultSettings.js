@@ -1,29 +1,40 @@
 const defaultSettings = {
     cvs: null,
     ctx: null,
-    pause: false,
-    width: 600,
-    height: 400,
+    stop: false,
+    'No Boundaries': true,
     stepsPerSecond: 2,
+    // border
+    'Choose Preset': 'Pure random',
     color: {
         background: '#ffffff',
         cell: '#000000'
     },
-    model: {
-        columns: 10,
-        rows: 10,
-        /**
-         * @type {number[][]} grid - двухмерный массив чисел
-         */
-        grid: null,
-        cell: {
-            width: null,
-            height: null,
-            isEllipse: true,
-        },
-        field: {
-            width: null,
-            height: null,
-        }
-    }
+    /**
+    * @type {number[][]} grid - двухмерный массив чисел
+    */
+    grid: null,
+    cell: {
+        width: null,
+        height: null,
+        isEllipse: true,
+    },
+
+    // model: {
+    //     columns: 10,
+    //     rows: 10,
+    //     /**
+    //      * @type {number[][]} grid - двухмерный массив чисел
+    //      */
+    //     grid: null,
+    //     cell: {
+    //         width: null,
+    //         height: null,
+    //         isEllipse: true,
+    //     },
+    //     field: {
+    //         width: null,
+    //         height: null,
+    //     }
+    // }
 }

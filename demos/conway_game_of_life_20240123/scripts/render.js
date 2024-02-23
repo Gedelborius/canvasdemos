@@ -34,6 +34,15 @@ const render = (_ => {
         requestAnimationFrameId = requestAnimationFrame(frameCallback);
     };
 
+    function clear() {
+        stop();
+        completionCallback = null;
+        requestAnimationFrameId = null;
+        framePerSecond = null;
+        interval = null;
+        thenTimeStamp = 0;
+    }
+
     function start(callback = null, fps = null) {
         if (requestAnimationFrameId === null) {
             if (callback !== null && typeof callback === 'function') {
@@ -63,6 +72,7 @@ const render = (_ => {
 
     return {
         set,
+        clear,
         start,
         stop,
         restart
