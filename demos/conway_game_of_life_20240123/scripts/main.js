@@ -53,7 +53,7 @@ function step(scene) {
     for (let column = 0; column < columns; column++) {
         for (let row = 0; row < rows; row++) {
 
-            const sum = sumOfAdjacentCells(scene.grid, column, row, scene['No Boundaries']),
+            const sum = sumOfAdjacentCells(scene.grid, column, row, !scene['No Boundaries']),
                 state = scene.grid[column][row];
 
             if (state === 0 && sum === 3) {
