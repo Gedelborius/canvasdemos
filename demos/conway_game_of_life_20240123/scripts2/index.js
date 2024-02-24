@@ -6,6 +6,8 @@ const context = getContext();
 console.log('canvas got: ', canvas!=null);
 console.log('context got: ', context!=null);
 
+// resizeCanvas();
+fillCanvas();
 drawCell(0, 0);
 
 console.log('glider', glider);

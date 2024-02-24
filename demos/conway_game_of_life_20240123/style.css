@@ -1,7 +1,22 @@
-.wrap {
-
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
-#canvas {
+.wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Высота по вашему усмотрению или в соответствии с дизайном */
+    width: 100%; /* Ширина по вашему усмотрению или в соответствии с дизайном */
+}
 
+/**
+  Это решение для пропорционального растягивания на доступную страницу
+ */
+#canvas {
+    max-width: 100%;
+    max-height: 100vh;
+    image-rendering: crisp-edges;
 }

@@ -6,6 +6,16 @@ function getContext() {
     return getCanvas()?.getContext('2d');
 }
 
+function fillCanvas(color = '#dedede'){
+    const canvas = getCanvas();
+    const ctx = getContext();
+    // Задаем цвет заливки
+    ctx.fillStyle = color;
+
+    // Заливаем весь canvas выбранным цветом
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
 function drawCell(x, y, width = fieldSettings.cellSize, height = fieldSettings.cellSize, isEllipse = fieldSettings.isCellEllipse) {
     const ctx = getContext();
     ctx.fillStyle = canvasSettings.cellColor;
@@ -87,4 +97,29 @@ function drawArray(arr2D) {
         }
     }
 
+}
+
+
+function resizeCanvas() {
+    const canvas = getCanvas();
+    const parent = canvas.parentElement;
+    const parentWidth = parent.clientWidth;
+    const parentHeight = parent.clientHeight;
+    const aspectRatio = canvas.width / canvas.height;
+
+    let newWidth;
+    let newHeight;
+
+    // Вычисляем новый размер, сохраняя пропорции
+    if (parentWidth / parentHeight > aspectRatio) {
+        newHeight = parentHeight;
+        newWidth = newHeight * aspectRatio;
+    } else {
+        newWidth = parentWidth;
+        newHeight = newWidth / aspectRatio;
+    }
+
+    // Применяем новый размер к canvas
+    canvas.style.width = `${newWidth}px`;
+    canvas.style.height = `${newHeight}px`;
 }
