@@ -15,8 +15,8 @@ const defaultSettings = {
     */
     grid: null,
     cell: {
-        width: null,
-        height: null,
+        width: 20,
+        height: 20,
         isEllipse: true,
     },
 

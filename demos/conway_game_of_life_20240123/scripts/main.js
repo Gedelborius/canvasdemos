@@ -80,55 +80,25 @@ function step(scene) {
 }
 
 function setCanvas(scene) {
-    canvasHelper.create.canvas();
-    canvasHelper.setContext();
-    scene.cvs = canvasHelper.canvas();
-    scene.cvs.setAttribute(
-        'style',
-        ' display: flex; justify-content: center; align-items: center; width: 100%;  height: 100vh; image-rendering: pixelated; image-rendering: crisp-edges;'
-    )
-    scene.ctx = canvasHelper.context();
-    canvasHelper.insertBeforeFirst.canvas();
+    scene.cvs = document.getElementById('canvas');
+    scene.cvs.width = 800;
+    scene.cvs.height = 800;
+    scene.ctx = scene.cvs.getContext('2d');
     return scene;
 }
 
-function resizeCanvas(scene) {
-    const pixelRatio = window.devicePixelRatio || 1;
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    scene.cvs.width = viewportWidth * pixelRatio;
-    scene.cvs.height = viewportHeight * pixelRatio;
-    scene.cvs.style.width = viewportWidth + 'px';
-    scene.cvs.style.height = viewportHeight + 'px';
+function copyToFortyByFortyGrid(grid) {
+    const length = { length: 40 };
+    return Array.from(length, (_, column) => Array.from(length, (_, row) => grid[column] !== undefined && grid[column][row] !== undefined ? grid[column][row] : 0));
 }
 
-function setCellSize(scene) {
-    scene.cell.width = scene.cvs.width / scene.grid[0].length;
-    scene.cell.height = scene.cvs.height / scene.grid.length;
-}
-
-function start(
-    scene,
-    preset = {
-        columns: null,
-        rows: null,
-        grid: null
-    }
-) {
+function start(scene, grid = null) {
     render.clear();
-
-    if (preset.grid === null) {
-        if (preset.columns !== null && preset.rows !== null) {
-            scene.grid = makeGrid(preset.columns, preset.rows);
-        } else {
-            const size = getRandomInt(10, 50);
-            scene.grid = makeGrid(size, size)
-        }
+    if (grid === null) {
+        scene.grid = makeGrid(40, 40);
     } else {
-        scene.grid = preset.grid;
+        scene.grid = copyToFortyByFortyGrid(grid);
     }
-
-    setCellSize(scene);
     render.start(_ => step(scene), scene.stepsPerSecond);
 }
 
@@ -146,18 +116,7 @@ function init() {
         scene.pause = !scene.pause;
     }
     scene.start = start;
-
     const gui = setGUI(scene);
-
-
-    function resizeCallback() {
-        resizeCanvas(scene);
-        setCellSize(scene);
-    }
-    window.addEventListener("resize", resizeCallback);
-
-    resizeCanvas(scene);
-
     start(scene);
 }
 

@@ -10,7 +10,7 @@ function setGUI(scene) {
         if (string === 'Pure Random') {
             scene.start(scene);
         } else {
-            scene.start(scene, { grid: gridPresets[string] });
+            scene.start(scene, gridPresets[string]);
         }
     });
     const fColors = gui.addFolder('Colors');
@@ -20,7 +20,6 @@ function setGUI(scene) {
     }
     const fGameSettings = gui.addFolder('Game Settings');
     fGameSettings.add(scene, 'No Boundaries')
-    // const fGameSpeed = fGameSettings.addFolder('Game Speed');
     const speedKey = 'stepsPerSecond';
     fGameSettings.add(
         scene,
@@ -38,20 +37,6 @@ function setGUI(scene) {
     const fCell = fModelSettings.add(
         scene.cell,
         'isEllipse',
-    )
-
-    // const fTest = gui.addFolder('TEST');
-    // fTest.add(scene, 'stringTest').onChange(_ => {
-    //     console.log(scene);
-    // });
-    // const test = fTest.add(scene, 'numberTest', null, null, 123)
-    // console.log("test: ", test)
-    // const test2 = fTest.add(scene, 'testOptions', ['1', '2', '3']).onChange(_ => {
-    //     console.log(scene)
-    // });
-    // console.log("test2: ", test2)
-    // fTest.add(scene, 'functionTest', 'НАЖМИ МЕНЯ', 'TEST');
-
-
+    );
     return gui;
 }
